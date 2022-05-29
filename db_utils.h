@@ -9,7 +9,7 @@ void create_tables(){
 
     string sql = "CREATE TABLE IF NOT EXISTS VERTEX("
                  "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "NAME CHAR[4] NOT NULL);"
+                 "NAME CHAR[4] UNIQUE NOT NULL);"
                  "CREATE TABLE IF NOT EXISTS EDGE("
                  "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                  "ORIGIN INTEGER FOREIGNKEY REFERENCES VERTEX(ID),"
