@@ -44,6 +44,21 @@ void save_vertex_to_db(string vertex_name){
     sqlite3_close(db);
 }
 
+void save_edge_to_db(int origin, int destination, int weight){
+    sqlite3* db;
+    string sql ="INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES("+to_string(origin)+","+to_string(destination)+","+to_string(weight)+");";
+    int exit = sqlite3_open("test.db", &db);
+    char* messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if(exit != SQLITE_OK){
+        cerr << "Error" << messageError <<endl;
+        sqlite3_free(messageError);
+    }
+    else{
+        cout << "Edge added successfully" << endl;
+    }
+    sqlite3_close(db);
+}
 
 
 // Actually unused function
