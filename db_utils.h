@@ -46,7 +46,8 @@ void save_vertex_to_db(string vertex_name){
 
 void save_edge_to_db(int origin, int destination, int weight){
     sqlite3* db;
-    string sql ="INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES("+to_string(origin)+","+to_string(destination)+","+to_string(weight)+");";
+    string sql ="PRAGMA foreign_keys = ON;"
+                "INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES("+to_string(origin)+","+to_string(destination)+","+to_string(weight)+");";
     int exit = sqlite3_open("test.db", &db);
     char* messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
