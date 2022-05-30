@@ -12,9 +12,9 @@ void create_tables(){
                  "NAME CHAR[4] UNIQUE NOT NULL);"
                  "CREATE TABLE IF NOT EXISTS EDGE("
                  "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "ORIGIN INTEGER FOREIGNKEY REFERENCES VERTEX(ID),"
-                 "DESTINATION INTEGER FOREIGNKEY REFERENCES VERTEX(ID),"
-                 "WEIGHT INTEGER);";
+                 "ORIGIN INTEGER FOREIGNKEY REFERENCES VERTEX(ID) DEFAULT NULL,"
+                 "DESTINATION INTEGER FOREIGNKEY REFERENCES VERTEX(ID) DEFAULT NULL,"
+                 "WEIGHT INTEGER DEFAULT NULL);";
     int exit;
     exit = sqlite3_open("test.db", &db);
     char* messageError;
