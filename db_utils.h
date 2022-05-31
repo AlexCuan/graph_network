@@ -77,6 +77,64 @@ void delete_vertex_from_db(string vertex_name){
     sqlite3_close(db);
 }
 
+void delete_edge_from_db(int origin, int destination){
+    sqlite3* db;
+    string sql ="DELETE FROM EDGE WHERE ORIGIN="+to_string(origin)+" AND DESTINATION="+to_string(destination)+";";
+    int exit = sqlite3_open("test.db", &db);
+    char* messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if(exit != SQLITE_OK){
+        cerr << "Error" << messageError <<endl;
+        sqlite3_free(messageError);
+    }
+    else{
+        cout << "Edge deleted successfully" << endl;
+    }
+    sqlite3_close(db);
+}
+
+//argc: holds the number of results
+//azColName: holds each column returned in array
+//argv holds each value in array
+//TO-DO Pass "&" values for arrays containing column and value
+static int callback (void* NotUsed, int argc, char** argv, char** azColName){
+    int i;
+    for(i=0; i<argc; i++){
+        cout << azColName[i] << " = " << argv[i] << endl;
+    }
+    cout << endl;
+    return 0;
+}
+
+void retrieve_vertex_from_db(){
+    sqlite3* db;
+    string sql = "SELECT * FROM VERTEX;";
+    int exit = sqlite3_open("test.db", &db);
+    char* messageError;
+    exit = sqlite3_exec(db, sql.c_str(), callback, 0, &messageError);
+    if(exit != SQLITE_OK){
+        cerr << "Error" << messageError <<endl;
+        sqlite3_free(messageError);
+    }
+    else{
+        cout << "Data selected successfully" << endl;
+    }
+}
+
+void retrieve_edge_from_db(){
+    sqlite3* db;
+    string sql = "SELECT * FROM EDGE;";
+    int exit = sqlite3_open("test.db", &db);
+    char* messageError;
+    exit = sqlite3_exec(db, sql.c_str(), callback, 0, &messageError);
+    if(exit != SQLITE_OK){
+        cerr << "Error" << messageError <<endl;
+        sqlite3_free(messageError);
+    }
+    else{
+        cout << "Data selected successfully" << endl;
+    }
+}
 
 // Actually unused function
 
