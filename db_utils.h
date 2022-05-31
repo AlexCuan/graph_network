@@ -60,7 +60,7 @@ void save_edge_to_db(int origin, int destination, int weight){
     }
     sqlite3_close(db);
 }
-
+//TO-DO: Add on-cascade delete
 void delete_vertex_from_db(string vertex_name){
     sqlite3* db;
     string sql ="DELETE FROM VERTEX WHERE NAME='"+vertex_name+"';";
@@ -148,6 +148,23 @@ void update_vertex(string vertex_name, string new_name){
     }
     else{
         cout << "Vertex updated successfully" << endl;
+    }
+    sqlite3_close(db);
+}
+
+void update_edge(int origin, int destination, int weight, int new_origin, int new_destination, int new_weight){
+    sqlite3* db;
+    string sql = "PRAGMA foreign_keys = ON;"
+                 "UPDATE EDGE SET ORIGIN="+to_string(new_origin)+", DESTINATION="+to_string(new_destination)+", WEIGHT="+to_string(new_weight)+" WHERE ORIGIN="+to_string(origin)+" AND DESTINATION="+to_string(destination)+" AND WEIGHT="+to_string(weight)+";";
+    int exit = sqlite3_open("test.db", &db);
+    char* messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if(exit != SQLITE_OK){
+        cerr << "Error" << messageError <<endl;
+        sqlite3_free(messageError);
+    }
+    else{
+        cout << "Edge updated successfully" << endl;
     }
     sqlite3_close(db);
 }
