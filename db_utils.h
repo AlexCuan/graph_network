@@ -136,6 +136,22 @@ void retrieve_edge_from_db(){
     }
 }
 
+void update_vertex(string vertex_name, string new_name){
+    sqlite3* db;
+    string sql = "UPDATE VERTEX SET NAME='"+new_name+"' WHERE NAME='"+vertex_name+"';";
+    int exit = sqlite3_open("test.db", &db);
+    char* messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if(exit != SQLITE_OK){
+        cerr << "Error" << messageError <<endl;
+        sqlite3_free(messageError);
+    }
+    else{
+        cout << "Vertex updated successfully" << endl;
+    }
+    sqlite3_close(db);
+}
+
 // Actually unused function
 
 //void create_db() {
