@@ -28,33 +28,41 @@ struct node_name_t { // crea una nueva propiedad para el vertice
   typedef vector< Edge > vector_edges;
   typedef vector< string > vector_string;
   typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+  typedef boost::graph_traits<Graph>::edge_descriptor edge;
 
   Graph G;
-  property_map<Graph, node_name_t>::type name = get(node_name_t(), G);
+  property_map<Graph, node_name_t>::type name_node = get(node_name_t(), G);
+ // property_map<Graph, edge_weight_t>::type weight_of_edge = get(edge_weigth_t(), G);
 
-  void add_edges(Edge arco, float weigth){
+  void add_edges(Edge arco, float weigth = 0){
        add_edge(arco.first, arco.second, weigth, G); // agrega un arco con su respectivo peso
      }
 
 
 
     void add_name_vertex(int index_vertex_p, string name_vertex_p){
-        boost::put(name, index_vertex_p, name_vertex_p);
+        boost::put(name_node, index_vertex_p, name_vertex_p);
         }
 
     Vertex add_node(){
-     Vertex v1 = boost::add_vertex(G);
+       Vertex v1 = boost::add_vertex(G);
+       return v1;
+
        
     }
     
-   void remove_node(){
-      clear_vertex(Vertex v1, )
-      // get the property map for vertex indices
-    typedef property_map<Graph, vertex_index_t>::type IndexMap;
-    IndexMap index = get(vertex_index, G);
-
+   void remove_node(Vertex v1){
+      clear_vertex(v1, G);
+      remove_vertex(v1, G);
     } 
 
+  void remove_Edge(Vertex v1, Vertex v2){
+    remove_edge(v1, v2, G);
+  }
+
+  float add_weight(Edge Ed, float weight_value){
+    boost :: put(boost::edge_weight_t(), G, Ed, weight_value); //agreg un peso dd
+  }
 
 
 #endif //GRAFO_EN_FUNCION_LIBRARY_H
