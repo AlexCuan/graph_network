@@ -47,13 +47,13 @@ struct node_name_t { // crea una nueva propiedad para el vertice
        
     }
     
-   /* void remove_node(){
-      //clear_vertex()
+   void remove_node(){
+      clear_vertex(Vertex v1, )
       // get the property map for vertex indices
     typedef property_map<Graph, vertex_index_t>::type IndexMap;
     IndexMap index = get(vertex_index, G);
 
-    } */
+    } 
 
 
 
