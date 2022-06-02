@@ -29,10 +29,21 @@ typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 typedef boost::graph_traits<Graph>::edge_descriptor edge;
 Graph* G = new Graph;
 
-property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_weight, *G);
+typename property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_weight, *G);
+
+/*typename property_map < DirectedGraph, edge_weight_t >::type
+    weight = get(edge_weight, digraph); */
+
+// prueba
+struct arco_prueb{
+  string first;
+  string second;
+};
+typedef arco_prueb edge1;
 
 
-//  property_map<Graph, node_name_t>::type name_node = get(node_name_t(), G);
+
+ property_map<Graph, node_name_t>::type name_node = get(node_name_t(), *G);
 //Edge a = std::make_pair(2,3);
 //Edge b = std::make_pair(3,4);
 
@@ -47,15 +58,11 @@ void add_edges(Edge edge, Graph &referenced_graph) {
 //     }
 
 
-<<<<<<< HEAD
- /* void add_weight(Edge Ed, float weight_value){
-    boost :: put(boost::edge_weight_t(), G, Ed, weight_value); //agreg un peso dd
-  }*/
-=======
 //
-//    void add_name_vertex(int index_vertex_p, string name_vertex_p){
-//        boost::put(name_node, index_vertex_p, name_vertex_p);
-//        }
+    void add_name_vertex(Vertex node, string name_vertex_p){
+      //put(name_node, index_vertex_p, name_vertex_p);
+      name_node[node] = name_vertex_p;
+        }
 
 void add_node(Graph &referenced_graph) {
     add_vertex(referenced_graph);
@@ -69,8 +76,7 @@ void add_node(Graph &referenced_graph) {
 //void remove_Edge(Vertex v1, Vertex v2) {
 //    remove_edge(v1, v2, G);
 //}
-//
-//void add_weight(Edge edge, int weight_value) {
-//    boost::put(boost::edge_weight_t(), G, edge, weight_value); //agreg un peso dd
-//}
->>>>>>> 2de2af69fece162d5bbf533c43a57b849b7a71b5
+void add_weight(Edge edge, int weight_value) {
+   // boost::put(edge_weight_map, edge, weight_value); //agreg un peso dd
+  // edge_weight_map[edge] = weight_value;
+}
