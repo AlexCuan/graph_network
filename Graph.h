@@ -26,7 +26,7 @@ typedef std::pair<int, int> Edge;
 typedef vector<Edge> vector_edges;
 typedef vector<string> vector_string;
 typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
-typedef boost::graph_traits<Graph>::edge_descriptor edge;
+typedef boost::graph_traits<Graph>::edge_descriptor edge1;
 Graph* G = new Graph;
 
 typename property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_weight, *G);
@@ -35,11 +35,11 @@ typename property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_wei
     weight = get(edge_weight, digraph); */
 
 // prueba
-struct arco_prueb{
+/*struct arco_prueb{
   string first;
   string second;
 };
-typedef arco_prueb edge1;
+typedef arco_prueb edge1;*/
 
 
 
@@ -76,7 +76,7 @@ void add_node(Graph &referenced_graph) {
 //void remove_Edge(Vertex v1, Vertex v2) {
 //    remove_edge(v1, v2, G);
 //}
-void add_weight(Edge edge, int weight_value) {
+void add_weight(edge1 arco, int weight_value) {
    // boost::put(edge_weight_map, edge, weight_value); //agreg un peso dd
-  // edge_weight_map[edge] = weight_value;
+   edge_weight_map[arco] = weight_value;
 }
