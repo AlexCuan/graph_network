@@ -1,9 +1,9 @@
 #include <iostream>                  // for std::cout
 #include <utility>                   // for std::pair
 #include <algorithm>                 // for std::for_each
-#include <boost/boost/graph/graph_traits.hpp>
-#include <boost/boost/graph/adjacency_list.hpp>
-#include <boost/boost/graph/dijkstra_shortest_paths.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <vector>
 
 using namespace boost;
@@ -47,16 +47,16 @@ struct node_name_t { // crea una nueva propiedad para el vertice
 
        
     }
-    
+
    void remove_node(Vertex v1){
       clear_vertex(v1, G);
       remove_vertex(v1, G);
-    } 
+    }
 
   void remove_Edge(Vertex v1, Vertex v2){
     remove_edge(v1, v2, G);
   }
 
-  float add_weight(Edge Ed, float weight_value){
+  void add_weight(Edge Ed, float weight_value){
     boost :: put(boost::edge_weight_t(), G, Ed, weight_value); //agreg un peso dd
   }
