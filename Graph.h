@@ -57,6 +57,6 @@ struct node_name_t { // crea una nueva propiedad para el vertice
     remove_edge(v1, v2, G);
   }
 
-  void add_weight(Edge Ed, float weight_value){
+ /* void add_weight(Edge Ed, float weight_value){
     boost :: put(boost::edge_weight_t(), G, Ed, weight_value); //agreg un peso dd
-  }
+  }*/
