@@ -1,12 +1,9 @@
-#ifndef GRAFO_EN_FUNCION_LIBRARY_H
-#define GRAFO_EN_FUNCION_LIBRARY_H
-
 #include <iostream>                  // for std::cout
 #include <utility>                   // for std::pair
 #include <algorithm>                 // for std::for_each
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
+#include <boost/boost/graph/graph_traits.hpp>
+#include <boost/boost/graph/adjacency_list.hpp>
+#include <boost/boost/graph/dijkstra_shortest_paths.hpp>
 #include <vector>
 
 using namespace boost;
@@ -63,6 +60,3 @@ struct node_name_t { // crea una nueva propiedad para el vertice
   float add_weight(Edge Ed, float weight_value){
     boost :: put(boost::edge_weight_t(), G, Ed, weight_value); //agreg un peso dd
   }
-
-
-#endif //GRAFO_EN_FUNCION_LIBRARY_H
