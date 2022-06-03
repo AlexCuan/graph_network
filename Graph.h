@@ -15,11 +15,11 @@ using std::string;
 // Define a new vertex property
 struct node_name_t {
     typedef vertex_property_tag kind;
-  };
+};
 
 typedef property<node_name_t, std::string> NodeNameProperty;
 typedef property<edge_weight_t, int> EdgeProperty;
-typedef adjacency_list<vecS, vecS, undirectedS, NodeNameProperty , EdgeProperty > Graph;
+typedef adjacency_list<vecS, vecS, undirectedS, NodeNameProperty, EdgeProperty> Graph;
 typedef vector<int> vector_int;
 typedef vector<float> vector_float;
 typedef std::pair<int, int> Edge;
@@ -27,9 +27,19 @@ typedef vector<Edge> vector_edges;
 typedef vector<string> vector_string;
 typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 typedef boost::graph_traits<Graph>::edge_descriptor edge1;
-Graph* G = new Graph;
+
+Graph *G = new Graph;
 
 typename property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_weight, *G);
+typename property_map<Graph, node_name_t>::type name_node = get(node_name_t(), *G);
+typedef property_map<Graph, vertex_index_t>::type IndexMap;
+IndexMap vertex_i = get(vertex_index, *G);
+
+typedef graph_traits<Graph>::vertex_iterator vertex_iter;
+typedef graph_traits<Graph>::edge_iterator edge_iter;
+std::pair<vertex_iter, vertex_iter> vp;
+std::pair<edge_iter, edge_iter> ep;
+
 
 /*typename property_map < DirectedGraph, edge_weight_t >::type
     weight = get(edge_weight, digraph); */
@@ -41,42 +51,52 @@ typename property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_wei
 };
 typedef arco_prueb edge1;*/
 
-
-
- property_map<Graph, node_name_t>::type name_node = get(node_name_t(), *G);
-//Edge a = std::make_pair(2,3);
-//Edge b = std::make_pair(3,4);
-
-
 void add_edges(Edge edge, Graph &referenced_graph) {
     add_edge(edge.first, edge.second, referenced_graph);
 }
 
-
-//  void add_edges(Edge arco, float& weigth){
-//       add_edge(arco.first, arco.second, weigth, &G); // agrega un arco con su respectivo peso
-//     }
-
-
-//
-    void add_name_vertex(Vertex node, string name_vertex_p){
-      //put(name_node, index_vertex_p, name_vertex_p);
-      name_node[node] = name_vertex_p;
-        }
-
 void add_node(Graph &referenced_graph) {
     add_vertex(referenced_graph);
+}
+
+void add_name_vertex(Vertex &node, string name_vertex_p) {
+    //put(name_node, index_vertex_p, name_vertex_p);
+    name_node[node] = name_vertex_p;
+}
+Vertex get_vertex_by_index(Graph &referenced_graph, int index_vertex_p) {
+    for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
+        if (vertex_i[*vp.first] == index_vertex_p) {
+            return *vp.first;
+        }
+    }
+}
+Vertex get_vertex_by_name(Graph &referenced_graph, string vertex_name) {
+    for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
+        if(name_node[*vp.first]==vertex_name){
+            return *vp.first;
+        }
+    }
+
+//    for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
+//        add_name_vertex(*vp.first, "HOla");
+//        std::cout << "vertex: " << *vp.first << " "<<name_node[*vp.first]<< std::endl;
+//    }
+}
+
+
+void remove_node(Vertex node, Graph &referenced_graph) {
+    remove_vertex(node, referenced_graph);
 }
 
 //void remove_node(Graph &G) {
 //    clear_vertex(v1, G);
 //    remove_vertex(v1, G);
 //}
-//
+
 //void remove_Edge(Vertex v1, Vertex v2) {
 //    remove_edge(v1, v2, G);
 //}
 void add_weight(edge1 arco, int weight_value) {
-   // boost::put(edge_weight_map, edge, weight_value); //agreg un peso dd
-   edge_weight_map[arco] = weight_value;
+    // boost::put(edge_weight_map, edge, weight_value); //agreg un peso dd
+    edge_weight_map[arco] = weight_value;
 }
