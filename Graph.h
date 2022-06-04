@@ -36,9 +36,8 @@ typedef property_map<Graph, vertex_index_t>::type IndexMap;
 IndexMap vertex_i = get(vertex_index, *G);
 
 typedef graph_traits<Graph>::vertex_iterator vertex_iter;
-typedef graph_traits<Graph>::edge_iterator edge_iter;
+graph_traits<Graph>::edge_iterator ei, ei_end;
 std::pair<vertex_iter, vertex_iter> vp;
-std::pair<edge_iter, edge_iter> ep;
 
 
 /*typename property_map < DirectedGraph, edge_weight_t >::type
@@ -59,18 +58,18 @@ void add_node(Graph &referenced_graph) {
     add_vertex(referenced_graph);
 }
 
-void add_name_vertex(Vertex &node, string name_vertex_p) {
+void add_name_vertex(Vertex &vertex, string name_vertex_p) {
     //put(name_node, index_vertex_p, name_vertex_p);
-    name_node[node] = name_vertex_p;
+    name_node[vertex] = name_vertex_p;
 }
-Vertex get_vertex_by_index(Graph &referenced_graph, int index_vertex_p) {
+Vertex get_vertex_by_index( int index_vertex_p, Graph &referenced_graph) {
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
         if (vertex_i[*vp.first] == index_vertex_p) {
             return *vp.first;
         }
     }
 }
-Vertex get_vertex_by_name(Graph &referenced_graph, string vertex_name) {
+Vertex get_vertex_by_name(string vertex_name,Graph &referenced_graph) {
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
         if(name_node[*vp.first]==vertex_name){
             return *vp.first;
@@ -83,6 +82,14 @@ Vertex get_vertex_by_name(Graph &referenced_graph, string vertex_name) {
 //    }
 }
 
+Edge get_edge(int from, int to, Graph &referenced_graph) {
+    for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei) {
+        if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to)||
+        (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to)) {
+            return Edge (vertex_i[source(*ei, referenced_graph)], vertex_i[target(*ei, referenced_graph)]);
+        }
+        }
+    }
 
 void remove_node(Vertex node, Graph &referenced_graph) {
     remove_vertex(node, referenced_graph);
