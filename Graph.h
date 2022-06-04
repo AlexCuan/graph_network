@@ -38,6 +38,8 @@ IndexMap vertex_i = get(vertex_index, *G);
 typedef graph_traits<Graph>::vertex_iterator vertex_iter;
 graph_traits<Graph>::edge_iterator ei, ei_end;
 std::pair<vertex_iter, vertex_iter> vp;
+boost::graph_traits<Graph>::adjacency_iterator ai, ai_end;
+
 
 void add_edges(Edge edge, Graph &referenced_graph) {
     add_edge(edge.first, edge.second, referenced_graph);
@@ -51,16 +53,17 @@ void modify_vertex_name(Vertex vertex, string name_vertex_p) {
     name_node[vertex] = name_vertex_p;
 }
 
-Vertex get_vertex_by_index( int index_vertex_p, Graph &referenced_graph) {
+Vertex get_vertex_by_index(int index_vertex_p, Graph &referenced_graph) {
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
         if (vertex_i[*vp.first] == index_vertex_p) {
             return *vp.first;
         }
     }
 }
-Vertex get_vertex_by_name(string vertex_name,Graph &referenced_graph) {
+
+Vertex get_vertex_by_name(string vertex_name, Graph &referenced_graph) {
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
-        if(name_node[*vp.first]==vertex_name){
+        if (name_node[*vp.first] == vertex_name) {
             return *vp.first;
         }
     }
@@ -68,14 +71,14 @@ Vertex get_vertex_by_name(string vertex_name,Graph &referenced_graph) {
 
 Edge_desc get_edge(int from, int to, Graph &referenced_graph) {
     for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei) {
-        if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to)||
-        (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to)) {
+        if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to) ||
+            (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to)) {
             return *ei;
         }
-        }
     }
+}
 
-void remove_node(Vertex vertex,Graph &referenced_graph) {
+void remove_node(Vertex vertex, Graph &referenced_graph) {
     remove_vertex(vertex, referenced_graph);
 }
 
@@ -89,4 +92,12 @@ void modify_weight(Edge_desc arco, int weight_value) {
 
 void clear_node(Vertex vertex, Graph &referenced_graph) {
     clear_vertex(vertex, referenced_graph);
+}
+
+void retrieve_adjacent_vertices(Vertex v, Graph &referenced_graph) {
+    std::cout<<name_node[v];
+    //TO-DO: Fix at the end of the function retrieves a % when the vertex is not found
+    for (boost::tie(ai, ai_end) = adjacent_vertices(v, referenced_graph); ai != ai_end; ++ai) {
+        std::cout <<"->"<< vertex_i[*ai];
+    }
 }
