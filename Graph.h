@@ -26,7 +26,7 @@ typedef std::pair<int, int> Edge;
 typedef vector<Edge> vector_edges;
 typedef vector<string> vector_string;
 typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
-typedef boost::graph_traits<Graph>::edge_descriptor edge1;
+typedef boost::graph_traits<Graph>::edge_descriptor Edge_desc;
 
 Graph *G = new Graph;
 
@@ -48,7 +48,7 @@ std::pair<vertex_iter, vertex_iter> vp;
   string first;
   string second;
 };
-typedef arco_prueb edge1;*/
+typedef arco_prueb Edge_desc;*/
 
 void add_edges(Edge edge, Graph &referenced_graph) {
     add_edge(edge.first, edge.second, referenced_graph);
@@ -82,11 +82,11 @@ Vertex get_vertex_by_name(string vertex_name,Graph &referenced_graph) {
 //    }
 }
 
-Edge get_edge(int from, int to, Graph &referenced_graph) {
+Edge_desc get_edge(int from, int to, Graph &referenced_graph) {
     for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei) {
         if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to)||
         (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to)) {
-            return Edge (vertex_i[source(*ei, referenced_graph)], vertex_i[target(*ei, referenced_graph)]);
+            return *ei;
         }
         }
     }
@@ -99,7 +99,7 @@ void remove_Edge(Vertex v1, Vertex v2, Graph &referenced_graph) {
     remove_edge(v1, v2, referenced_graph);
 }
 
-void add_weight(edge1 arco, int weight_value) {
+void add_weight(Edge_desc arco, int weight_value) {
     // boost::put(edge_weight_map, edge, weight_value); //agreg un peso dd
     edge_weight_map[arco] = weight_value;
 }
