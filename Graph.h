@@ -91,14 +91,17 @@ Edge get_edge(int from, int to, Graph &referenced_graph) {
         }
     }
 
-void remove_node(Vertex node, Graph &referenced_graph) {
-    remove_vertex(node, referenced_graph);
-}
+void remove_node(string vertex_name, Graph &referenced_graph) {
+    Vertex vertex = get_vertex_by_name(vertex_name, referenced_graph);
+    if (vertex) {
+        remove_vertex(vertex, referenced_graph);
+        std::cout<<"Nodo removido con exito"<<std::endl;
+    }
+    else{
+        std::cout<<"No existe el nodo"<<std::endl;
+    }
 
-//void remove_node(Graph &G) {
-//    clear_vertex(v1, G);
-//    remove_vertex(v1, G);
-//}
+}
 
 //void remove_Edge(Vertex v1, Vertex v2) {
 //    remove_edge(v1, v2, G);
