@@ -95,9 +95,10 @@ void remove_node(Vertex vertex,Graph &referenced_graph) {
     remove_vertex(vertex, referenced_graph);
 }
 
-//void remove_Edge(Vertex v1, Vertex v2) {
-//    remove_edge(v1, v2, G);
-//}
+void remove_Edge(Vertex v1, Vertex v2, Graph &referenced_graph) {
+    remove_edge(v1, v2, referenced_graph);
+}
+
 void add_weight(edge1 arco, int weight_value) {
     // boost::put(edge_weight_map, edge, weight_value); //agreg un peso dd
     edge_weight_map[arco] = weight_value;
