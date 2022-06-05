@@ -39,6 +39,16 @@ typedef graph_traits<Graph>::vertex_iterator vertex_iter;
 graph_traits<Graph>::edge_iterator ei, ei_end;
 std::pair<vertex_iter, vertex_iter> vp;
 boost::graph_traits<Graph>::adjacency_iterator ai, ai_end;
+graph_traits< Graph >::vertex_iterator vi, vend;
+
+ typedef struct path_dist
+  {  int dist;
+     vector< Vertex > path;
+      
+  } path_and_dist;
+
+
+
 
 
 void add_edges(Edge edge, Graph &referenced_graph) {
@@ -101,3 +111,51 @@ void retrieve_adjacent_vertices(Vertex v, Graph &referenced_graph) {
         std::cout <<"->"<< vertex_i[*ai];
     }
 }
+
+
+vector<Vertex> get_Path(
+    const Graph& graph,
+    const std::vector<Vertex>& pMap,
+    const Vertex& source,
+    const Vertex& destination
+) {
+    std::vector<Vertex> path;
+    Vertex current = destination;
+    while (current != source)
+    {
+        path.push_back(current);
+        current = pMap[current];
+    }
+    path.push_back(source);
+    return path;
+}
+
+
+path_and_dist shortest_path(Vertex src, Vertex dest){ //determina el camino mas corto desde un vertice hacia todos los demas del grafo
+     std::vector< Vertex> p(num_vertices(*G));
+    std::vector< int > d(num_vertices(*G));
+    Vertex s = vertex(src, *G);
+     dijkstra_shortest_paths(*G, src,
+        predecessor_map(boost::make_iterator_property_map(  p.begin(), get(boost::vertex_index, *G))).distance_map(boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, *G))));
+
+
+  
+  
+  // int distance = d[dest];
+
+
+  
+  path_and_dist path_distance = {.dist = d[dest],
+                                  .path = get_Path(*G, p, src, dest)};
+
+
+  return path_distance ;
+  
+  
+  
+
+}
+
+
+
+
