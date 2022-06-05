@@ -136,7 +136,7 @@ void retrieve_edge_from_db(){
     }
 }
 
-void update_vertex(string vertex_name, string new_name){
+void update_vertex_db(string vertex_name, string new_name){
     sqlite3* db;
     string sql = "UPDATE VERTEX SET NAME='"+new_name+"' WHERE NAME='"+vertex_name+"';";
     int exit = sqlite3_open("test.db", &db);
@@ -152,7 +152,7 @@ void update_vertex(string vertex_name, string new_name){
     sqlite3_close(db);
 }
 
-void update_edge(int origin, int destination, int weight, int new_origin, int new_destination, int new_weight){
+void update_edge_db(int origin, int destination, int weight, int new_origin, int new_destination, int new_weight){
     sqlite3* db;
     string sql = "PRAGMA foreign_keys = ON;"
                  "UPDATE EDGE SET ORIGIN="+to_string(new_origin)+", DESTINATION="+to_string(new_destination)+", WEIGHT="+to_string(new_weight)+" WHERE ORIGIN="+to_string(origin)+" AND DESTINATION="+to_string(destination)+" AND WEIGHT="+to_string(weight)+";";
