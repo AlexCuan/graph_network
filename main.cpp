@@ -24,7 +24,7 @@ int main() {
   arco1 = std::make_pair(0,2);
   arco2 = std::make_pair(0,3);
   arco3 = std::make_pair(1,2);
-  arco4 = std::make_pair(1,3);
+  arco4 = std::make_pair(2,3);
   arco5 = std::make_pair(2,4);
   arco6 = std::make_pair(3,4);
   
@@ -37,7 +37,7 @@ int main() {
   add_edges(arco5, *G);
   add_edges(arco6, *G);
 
-  modify_weight(get_edge(0, 1, *G), 2);
+ modify_weight(get_edge(0, 1, *G), 2);
   modify_weight(get_edge(0, 2, *G), 3);
   modify_weight(get_edge(0, 3, *G), 2);
   modify_weight(get_edge(1, 2, *G), 2);
