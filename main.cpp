@@ -19,7 +19,7 @@ int main() {
   }*/
   Edge arco, arco1, arco2, arco3, arco4, arco5, arco6;
 
-  cout << "helo";
+  cout << "helo \n";
   arco = std::make_pair(0,1);
   arco1 = std::make_pair(0,2);
   arco2 = std::make_pair(0,3);
@@ -45,7 +45,20 @@ int main() {
   modify_weight(get_edge(2, 4, *G), 2);
   modify_weight(get_edge(4, 3, *G), 2);
 
- //cout << num_vertices(*G);
+  path_and_dist dist;
+  vector <Vertex> ruta;
+  dist = shortest_path(get_vertex_by_index(0, *G), get_vertex_by_index(4, *G));
+  ruta = dist.path;
+
+  for(std::size_t i = 0; i < ruta.size(); i++){
+     cout << vertex_i(ruta[i]) << " ";
+  }
+ /* cout << " aqui"<< vertex_i(ruta[0]);
+  cout << " aqui"<< vertex_i(ruta[1]);
+  cout << " aqui"<< vertex_i(ruta[2]) << ruta.size();*/
+
+  cout <<" \n"<< dist.dist<< "\n";
+ cout << num_vertices(*G);
 
     return EXIT_SUCCESS;
 }
