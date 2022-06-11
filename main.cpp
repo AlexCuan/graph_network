@@ -37,25 +37,23 @@ int main() {
   add_edges(arco5, *G);
   add_edges(arco6, *G);
 
- modify_weight(get_edge(0, 1, *G), 2);
-  modify_weight(get_edge(0, 2, *G), 3);
-  modify_weight(get_edge(0, 3, *G), 2);
-  modify_weight(get_edge(1, 2, *G), 2);
-  modify_weight(get_edge(2, 3, *G), 1);
-  modify_weight(get_edge(2, 4, *G), 2);
-  modify_weight(get_edge(4, 3, *G), 2);
+  modify_weight(get_edge(0, 1, *G).edge, 2);
+  modify_weight(get_edge(0, 2, *G).edge, 3);
+  modify_weight(get_edge(0, 3, *G).edge, 2);
+  modify_weight(get_edge(1, 2, *G).edge, 2);
+  modify_weight(get_edge(2, 3, *G).edge, 1);
+  modify_weight(get_edge(2, 4, *G).edge, 2);
+  modify_weight(get_edge(4, 3, *G).edge, 2);
 
   path_and_dist dist;
   vector <Vertex> ruta;
-  dist = shortest_path(get_vertex_by_index(0, *G), get_vertex_by_index(4, *G));
+  dist = shortest_path(get_vertex_by_index(0, *G).vertex, get_vertex_by_index(4, *G).vertex);
   ruta = dist.path;
 
   for(std::size_t i = 0; i < ruta.size(); i++){
-     cout << vertex_i(ruta[i]) << " ";
+     cout << vertex_i(ruta[i]) << " --> ";
   }
- /* cout << " aqui"<< vertex_i(ruta[0]);
-  cout << " aqui"<< vertex_i(ruta[1]);
-  cout << " aqui"<< vertex_i(ruta[2]) << ruta.size();*/
+
 
   cout <<" \n"<< dist.dist<< "\n";
  cout << num_vertices(*G);

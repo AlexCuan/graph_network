@@ -47,7 +47,17 @@ graph_traits< Graph >::vertex_iterator vi, vend;
       
   } path_and_dist;
 
+ typedef struct edge_type{
+    bool found;
+    Edge_desc edge;
+    
+ } edge_struct;
 
+ typedef struct vertex_type{
+    bool found;
+    Vertex vertex;
+
+ } vertex_struct;
 
 
 
@@ -63,29 +73,43 @@ void modify_vertex_name(Vertex vertex, string name_vertex_p) {
     name_node[vertex] = name_vertex_p;
 }
 
-Vertex get_vertex_by_index(int index_vertex_p, Graph &referenced_graph) {
+vertex_struct get_vertex_by_index(int index_vertex_p, Graph &referenced_graph) {
+    vertex_struct vertex_found = {.found = false};
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
         if (vertex_i[*vp.first] == index_vertex_p) {
-            return *vp.first;
+            //return *vp.first;
+            vertex_found.found = true;
+            vertex_found.vertex = *vp.first;
+
         }
     }
+    return vertex_found;
 }
 
-Vertex get_vertex_by_name(string vertex_name, Graph &referenced_graph) {
+vertex_struct get_vertex_by_name(string vertex_name, Graph &referenced_graph) {
+    vertex_struct vertex_found = {.found = false};
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
         if (name_node[*vp.first] == vertex_name) {
-            return *vp.first;
+            //return *vp.first;
+            vertex_found.found = true;
+            vertex_found.vertex = *vp.first;
         }
     }
+    return vertex_found;
 }
 
-Edge_desc get_edge(int from, int to, Graph &referenced_graph) {
+edge_struct get_edge(int from, int to, Graph &referenced_graph) {
+    edge_struct edge_found = {.found = false};
     for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei) {
         if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to) ||
             (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to)) {
-            return *ei;
+            //return *ei;
+            edge_found.found = true;
+            edge_found.edge = *ei;
+
         }
     }
+    return edge_found;
 }
 
 void remove_node(Vertex vertex, Graph &referenced_graph) {
