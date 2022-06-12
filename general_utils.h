@@ -18,6 +18,21 @@ void add_vertex_m() {
 
 }
 
+void add_edge_m() {
+    string from, to;
+    cout << "Ingrese el nombre del vertice de origen: ";
+    cin >> from;
+    cout << "Ingrese el nombre del vertice de destino: ";
+    cin >> to;
+    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
+    if (get_edge(temp.first, temp.second, *G).found) {
+        cout << "Arista ya existente" << endl;
+    } else {
+        add_edges(temp, *G);
+        save_edge_to_db(from, to);
+    }
+}
+
 void update_vertex_m() {
     string actual_name;
     string new_name;
