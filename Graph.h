@@ -64,6 +64,8 @@ void add_edges(Edge edge, Graph &referenced_graph) {
     add_edge(edge.first, edge.second, referenced_graph);
 }
 
+
+
 void add_node(Graph &referenced_graph) {
     add_vertex(referenced_graph);
 }
@@ -117,6 +119,11 @@ void remove_node(Vertex vertex, Graph &referenced_graph) {
 
 void remove_Edge(Vertex v1, Vertex v2, Graph &referenced_graph) {
     remove_edge(v1, v2, referenced_graph);
+}
+
+void update_edge(Edge actual_edge, Edge new_edge){
+    remove_edge(vertex_i[actual_edge.first],vertex_i[actual_edge.second], *G);
+    add_edges(new_edge, *G);
 }
 
 void modify_weight(Edge_desc arco, int weight_value) {
