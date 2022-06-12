@@ -12,8 +12,8 @@ void create_tables(){
                  "NAME CHAR[4] UNIQUE NOT NULL);"
                  "CREATE TABLE IF NOT EXISTS EDGE("
                  "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "ORIGIN INTEGER FOREIGNKEY REFERENCES VERTEX(ID) DEFAULT NULL,"
-                 "DESTINATION INTEGER FOREIGNKEY REFERENCES VERTEX(ID) DEFAULT NULL,"
+                 "ORIGIN STRING FOREIGNKEY REFERENCES VERTEX(NAME) DEFAULT NULL,"
+                 "DESTINATION STRING FOREIGNKEY REFERENCES VERTEX(NAME) DEFAULT NULL,"
                  "WEIGHT INTEGER DEFAULT NULL);";
     int exit;
     exit = sqlite3_open("test.db", &db);
@@ -44,10 +44,10 @@ void save_vertex_to_db(string vertex_name){
     sqlite3_close(db);
 }
 
-void save_edge_to_db(int origin, int destination, int weight = 0){
+void save_edge_to_db(string origin, string destination, int weight = 0){
     sqlite3* db;
     string sql ="PRAGMA foreign_keys = ON;"
-                "INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES("+to_string(origin)+","+to_string(destination)+","+to_string(weight)+");";
+                "INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES('"+origin+"','"+destination+"','"+to_string(weight)+"');";
     int exit = sqlite3_open("test.db", &db);
     char* messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
@@ -77,9 +77,9 @@ void delete_vertex_from_db(string vertex_name){
     sqlite3_close(db);
 }
 
-void delete_edge_from_db(int origin, int destination){
+void delete_edge_from_db(string origin, string destination){
     sqlite3* db;
-    string sql ="DELETE FROM EDGE WHERE ORIGIN="+to_string(origin)+" AND DESTINATION="+to_string(destination)+";";
+    string sql ="DELETE FROM EDGE WHERE ORIGIN='"+origin+"' AND DESTINATION='"+destination+"';";
     int exit = sqlite3_open("test.db", &db);
     char* messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
