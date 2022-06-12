@@ -77,3 +77,23 @@ void update_edge_m() {
         cout << "No existe el arco" << endl;
     }
 }
+
+void get_shortest_path() {
+    string from, to;
+    cout << "Ingrese el nombre del vertice de origen: ";
+    cin >> from;
+    cout << "Ingrese el nombre del vertice de destino: ";
+    cin >> to;
+    vertex_struct a = get_vertex_by_name(from, *G);
+    vertex_struct b = get_vertex_by_name(to, *G);
+    if (a.found && b.found) {
+        path_and_dist dist = shortest_path(a.vertex, b.vertex);
+//        cout<<"El camino mas corto es de: "<<dist.dist<<" nodos y: "<<dist.dist - 1<<" vertices"<<endl;
+        for (std::size_t i = 0; i < dist.path.size(); i++) {
+            cout << vertex_i(dist.path[i]) << " <-- ";
+        }
+        cout<<endl;
+    } else {
+        cout << "No existe uno de los vertices" << endl;
+    }
+}
