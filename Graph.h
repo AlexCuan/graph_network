@@ -17,7 +17,7 @@ struct node_name_t {
     typedef vertex_property_tag kind;
 };
 
-typedef property<node_name_t, std::string> NodeNameProperty;
+typedef property<node_name_t, string> NodeNameProperty;
 typedef property<edge_weight_t, int> EdgeProperty;
 typedef adjacency_list<vecS, vecS, undirectedS, NodeNameProperty, EdgeProperty> Graph;
 typedef vector<int> vector_int;
@@ -145,11 +145,11 @@ void retrieve_adjacent_vertices(Vertex_desc v, Graph &referenced_graph) {
 
 vector<Vertex_desc> get_Path(
         const Graph &graph,
-        const std::vector<Vertex_desc> &pMap,
+        const vector<Vertex_desc> &pMap,
         const Vertex_desc &source,
         const Vertex_desc &destination
 ) {
-    std::vector<Vertex_desc> path;
+    vector<Vertex_desc> path;
     Vertex_desc current = destination;
     while (current != source) {
         path.push_back(current);
@@ -162,8 +162,8 @@ vector<Vertex_desc> get_Path(
 
 path_and_dist shortest_path(Vertex_desc src,
                             Vertex_desc dest) { //determina el camino mas corto desde un vertice hacia todos los demas del grafo
-    std::vector<Vertex_desc> p(num_vertices(*G));
-    std::vector<int> d(num_vertices(*G));
+    vector<Vertex_desc> p(num_vertices(*G));
+    vector<int> d(num_vertices(*G));
     Vertex_desc s = vertex(src, *G);
     dijkstra_shortest_paths(*G, src,
                             predecessor_map(boost::make_iterator_property_map(p.begin(), get(boost::vertex_index,
