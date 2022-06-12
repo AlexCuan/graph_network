@@ -97,3 +97,17 @@ void get_shortest_path() {
         cout << "No existe uno de los vertices" << endl;
     }
 }
+
+void get_adjacent_vertices(){
+    string name;
+    cout << "Ingrese el nombre del vertice: ";
+    cin >> name;
+    vertex_struct a = get_vertex_by_name(name, *G);
+    if (a.found) {
+        cout << "Vertices adyacentes: " << endl;
+            retrieve_adjacent_vertices(a.vertex, *G);
+        cout<<endl;
+    } else {
+        cout << "No existe el vertice" << endl;
+    }
+}
