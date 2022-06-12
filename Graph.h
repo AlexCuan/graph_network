@@ -25,8 +25,8 @@ typedef vector<float> vector_float;
 typedef std::pair<int, int> Edge;
 typedef vector<Edge> vector_edges;
 typedef vector<string> vector_string;
-typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
-typedef boost::graph_traits<Graph>::edge_descriptor Edge_desc;
+typedef graph_traits<Graph>::vertex_descriptor Vertex;
+typedef graph_traits<Graph>::edge_descriptor Edge_desc;
 
 Graph *G = new Graph;
 
@@ -39,6 +39,25 @@ typedef graph_traits<Graph>::vertex_iterator vertex_iter;
 graph_traits<Graph>::edge_iterator ei, ei_end;
 std::pair<vertex_iter, vertex_iter> vp;
 boost::graph_traits<Graph>::adjacency_iterator ai, ai_end;
+graph_traits<Graph>::vertex_iterator vi, vend;
+
+typedef struct path_dist {
+    int dist;
+    vector<Vertex> path;
+
+} path_and_dist;
+
+typedef struct edge_type {
+    bool found = false;
+    Edge_desc edge;
+
+} edge_struct;
+
+typedef struct vertex_type {
+    bool found = false;
+    Vertex vertex;
+
+} vertex_struct;
 
 
 void add_edges(Edge edge, Graph &referenced_graph) {
@@ -53,29 +72,43 @@ void modify_vertex_name(Vertex vertex, string name_vertex_p) {
     name_node[vertex] = name_vertex_p;
 }
 
-Vertex get_vertex_by_index(int index_vertex_p, Graph &referenced_graph) {
+vertex_struct get_vertex_by_index(int index_vertex_p, Graph &referenced_graph) {
+    vertex_struct vertex_found;
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
         if (vertex_i[*vp.first] == index_vertex_p) {
-            return *vp.first;
+            //return *vp.first;
+            vertex_found.found = true;
+            vertex_found.vertex = *vp.first;
+
         }
     }
+    return vertex_found;
 }
 
-Vertex get_vertex_by_name(string vertex_name, Graph &referenced_graph) {
+vertex_struct get_vertex_by_name(string vertex_name, Graph &referenced_graph) {
+    vertex_struct vertex_found;
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first) {
         if (name_node[*vp.first] == vertex_name) {
-            return *vp.first;
+            //return *vp.first;
+            vertex_found.found = true;
+            vertex_found.vertex = *vp.first;
         }
     }
+    return vertex_found;
 }
 
-Edge_desc get_edge(int from, int to, Graph &referenced_graph) {
+edge_struct get_edge(int from, int to, Graph &referenced_graph) {
+    edge_struct edge_found;
     for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei) {
         if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to) ||
             (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to)) {
-            return *ei;
+            //return *ei;
+            edge_found.found = true;
+            edge_found.edge = *ei;
+
         }
     }
+    return edge_found;
 }
 
 void remove_node(Vertex vertex, Graph &referenced_graph) {
@@ -95,9 +128,49 @@ void clear_node(Vertex vertex, Graph &referenced_graph) {
 }
 
 void retrieve_adjacent_vertices(Vertex v, Graph &referenced_graph) {
-    std::cout<<name_node[v];
+    cout << name_node[v];
     //TO-DO: Fix at the end of the function retrieves a % when the vertex is not found
-    for (boost::tie(ai, ai_end) = adjacent_vertices(v, referenced_graph); ai != ai_end; ++ai) {
-        std::cout <<"->"<< vertex_i[*ai];
+    for (tie(ai, ai_end) = adjacent_vertices(v, referenced_graph); ai != ai_end; ++ai) {
+        cout << "->" << vertex_i[*ai];
     }
 }
+
+vector<Vertex> get_Path(
+        const Graph &graph,
+        const std::vector<Vertex> &pMap,
+        const Vertex &source,
+        const Vertex &destination
+) {
+    std::vector<Vertex> path;
+    Vertex current = destination;
+    while (current != source) {
+        path.push_back(current);
+        current = pMap[current];
+    }
+    path.push_back(source);
+    return path;
+}
+
+
+path_and_dist shortest_path(Vertex src,
+                            Vertex dest) { //determina el camino mas corto desde un vertice hacia todos los demas del grafo
+    std::vector<Vertex> p(num_vertices(*G));
+    std::vector<int> d(num_vertices(*G));
+    Vertex s = vertex(src, *G);
+    dijkstra_shortest_paths(*G, src,
+                            predecessor_map(boost::make_iterator_property_map(p.begin(), get(boost::vertex_index,
+                                                                                             *G))).distance_map(
+                                    boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, *G))));
+
+
+    path_and_dist path_distance = {.dist = d[dest],
+            .path = get_Path(*G, p, src, dest)};
+
+    return path_distance;
+
+
+}
+
+
+
+
