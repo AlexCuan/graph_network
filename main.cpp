@@ -59,4 +59,3 @@ int main() {
  cout << num_vertices(*G);
 
     return EXIT_SUCCESS;
-}
