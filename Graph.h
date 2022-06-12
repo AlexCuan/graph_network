@@ -25,8 +25,8 @@ typedef vector<float> vector_float;
 typedef std::pair<int, int> Edge;
 typedef vector<Edge> vector_edges;
 typedef vector<string> vector_string;
-typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
-typedef boost::graph_traits<Graph>::edge_descriptor Edge_desc;
+typedef graph_traits<Graph>::vertex_descriptor Vertex;
+typedef graph_traits<Graph>::edge_descriptor Edge_desc;
 
 Graph *G = new Graph;
 
@@ -129,13 +129,12 @@ void clear_node(Vertex vertex, Graph &referenced_graph) {
 }
 
 void retrieve_adjacent_vertices(Vertex v, Graph &referenced_graph) {
-    std::cout<<name_node[v];
+    cout<<name_node[v];
     //TO-DO: Fix at the end of the function retrieves a % when the vertex is not found
-    for (boost::tie(ai, ai_end) = adjacent_vertices(v, referenced_graph); ai != ai_end; ++ai) {
-        std::cout <<"->"<< vertex_i[*ai];
+    for (tie(ai, ai_end) = adjacent_vertices(v, referenced_graph); ai != ai_end; ++ai) {
+        cout <<"->"<< vertex_i[*ai];
     }
 }
-
 
 vector<Vertex> get_Path(
     const Graph& graph,
