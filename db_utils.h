@@ -44,7 +44,7 @@ void save_vertex_to_db(string vertex_name){
     sqlite3_close(db);
 }
 
-void save_edge_to_db(int origin, int destination, int weight){
+void save_edge_to_db(int origin, int destination, int weight = 0){
     sqlite3* db;
     string sql ="PRAGMA foreign_keys = ON;"
                 "INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES("+to_string(origin)+","+to_string(destination)+","+to_string(weight)+");";
