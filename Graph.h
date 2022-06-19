@@ -32,8 +32,9 @@ Graph *G = new Graph;
 
 typename property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_weight, *G);
 typename property_map<Graph, node_name_t>::type name_node = get(node_name_t(), *G);
-typedef property_map<Graph, vertex_index_t>::type IndexMap;
-IndexMap vertex_i = get(vertex_index, *G);
+typename property_map<Graph, vertex_index_t>::type vertex_i = get(vertex_index, *G);
+//typedef property_map<Graph, vertex_index_t>::type vertex_i = get(vertex_index, *G);
+//IndexMap vertex_i = get(vertex_index, *G);
 
 typedef graph_traits<Graph>::vertex_iterator vertex_iter;
 graph_traits<Graph>::edge_iterator ei, ei_end;
