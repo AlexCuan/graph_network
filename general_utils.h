@@ -20,7 +20,7 @@ void add_vertex_m(string name) {
         modify_vertex_name(temp, name);
         save_vertex_to_db(name);
         
-        cout << vertex_i[temp];
+        //cout << vertex_i[temp];
     }
 
 }
@@ -32,7 +32,9 @@ void add_edge_m() {
     cin >> from;
     cout << "Ingrese el nombre del vertice de destino: ";
     cin >> to;
-   
+   add_vertex_m(from);
+   add_vertex_m(to);
+
     Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
     
     
