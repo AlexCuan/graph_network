@@ -1,30 +1,42 @@
 #include <iostream>
 #include "Graph.h"
 #include "db_utils.h"
+#include <stdlib.h>
+
 
 using namespace std;
 
-void add_vertex_m() {
-    string name;
-    cout << "Ingrese el nombre del vertice: ";
-    cin >> name;
+
+
+
+void add_vertex_m(string name) {
+    //string name;
+    //cout << "Ingrese el nombre del vertice: ";
+    //cin >> name;
     if (get_vertex_by_name(name, *G).found) {
         cout << "Vertice ya existente" << endl;
     } else {
         Vertex_desc temp = add_node(*G);
         modify_vertex_name(temp, name);
         save_vertex_to_db(name);
+        
+        cout << vertex_i[temp];
     }
 
 }
 
 void add_edge_m() {
     string from, to;
+    
     cout << "Ingrese el nombre del vertice de origen: ";
     cin >> from;
     cout << "Ingrese el nombre del vertice de destino: ";
     cin >> to;
+   
     Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
+    
+    
+
     if (get_edge(temp.first, temp.second, *G).found) {
         cout << "Arista ya existente" << endl;
     } else {
