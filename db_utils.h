@@ -11,7 +11,12 @@ typedef struct edge_data {
     int weight;
 } edge_data;
 
+typedef struct vertex_data {
+    string name;
+} vertex_data;
+
 typedef vector<edge_data> vector_edges;
+typedef vector<vertex_data> vector_vertices;
 
 void create_tables() {
     sqlite3 *db;
@@ -99,20 +104,21 @@ void delete_edge_from_db(string origin, string destination) {
     sqlite3_close(db);
 }
 
-//void retrieve_vertex_from_db(){
-//    sqlite3* db;
-//    string sql = "SELECT * FROM VERTEX;";
-//    int exit = sqlite3_open("test.db", &db);
-//    char* messageError;
-//    exit = sqlite3_exec(db, sql.c_str(), callback, 0, &messageError);
-//    if(exit != SQLITE_OK){
-//        cerr << "Error" << messageError <<endl;
-//        sqlite3_free(messageError);
-//    }
-//    else{
-//        cout << "Data selected successfully" << endl;
-//    }
-//}
+vector_vertices retrieve_vertex_from_db() {
+    sqlite3 *db;
+    int exit = sqlite3_open("test.db", &db);
+    sqlite3_stmt *stmt;;
+
+    sqlite3_prepare_v2(db, "SELECT * FROM VERTEX;", -1, &stmt, 0);
+    vertex_data e;
+    vector_vertices vector_vertices;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        e.name = (char *) sqlite3_column_text(stmt, 1);
+        vector_vertices.push_back(e);
+    }
+    sqlite3_finalize(stmt);
+    return vector_vertices;
+}
 
 vector_edges retrieve_edge_from_db() {
     sqlite3 *db;
@@ -121,7 +127,7 @@ vector_edges retrieve_edge_from_db() {
 
     sqlite3_prepare_v2(db, "SELECT * FROM EDGE;", -1, &stmt, 0);
     edge_data e;
-    vector<edge_data> edges_vector;
+    vector_edges edges_vector;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         e.origin = (char *) sqlite3_column_text(stmt, 1);
         e.destination = (char *) sqlite3_column_text(stmt, 2);
