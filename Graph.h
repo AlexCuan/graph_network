@@ -5,6 +5,7 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <vector>
+#include "db_utils.h"
 
 using namespace boost;
 using std::vector;
@@ -23,7 +24,6 @@ typedef adjacency_list<vecS, vecS, undirectedS, NodeNameProperty, EdgeProperty> 
 typedef vector<int> vector_int;
 typedef vector<float> vector_float;
 typedef std::pair<int, int> Edge;
-typedef vector<Edge> vector_edges;
 typedef vector<string> vector_string;
 typedef graph_traits<Graph>::vertex_descriptor Vertex_desc;
 typedef graph_traits<Graph>::edge_descriptor Edge_desc;
@@ -60,16 +60,6 @@ typedef struct vertex_type {
 
 } vertex_struct;
 
-
-void add_edges(Edge edge, Graph &referenced_graph) {
-    add_edge(edge.first, edge.second, referenced_graph);
-}
-
-
-
-Vertex_desc add_node(Graph &referenced_graph) {
-    return add_vertex(referenced_graph);
-}
 
 void modify_vertex_name(Vertex_desc vertex, string name_vertex_p) {
     name_node[vertex] = name_vertex_p;
@@ -115,6 +105,11 @@ edge_struct get_edge(int from, int to, Graph &referenced_graph) {
     return edge;
 }
 
+void add_node(string name, Graph &referenced_graph) {
+    Vertex_desc temp = add_vertex(referenced_graph);
+    modify_vertex_name(temp, name);
+}
+
 void remove_node(Vertex_desc vertex, Graph &referenced_graph) {
     remove_vertex(vertex, referenced_graph);
 }
@@ -123,9 +118,9 @@ void remove_Edge(Vertex_desc v1, Vertex_desc v2, Graph &referenced_graph) {
     remove_edge(v1, v2, referenced_graph);
 }
 
-void update_edge(Edge actual_edge, Edge new_edge){
-    remove_edge(vertex_i[actual_edge.first],vertex_i[actual_edge.second], *G);
-    add_edges(new_edge, *G);
+void update_edge(Edge actual_edge, Edge new_edge) {
+    remove_edge(vertex_i[actual_edge.first], vertex_i[actual_edge.second], *G);
+    add_edge(new_edge.first, new_edge.second, *G);
 }
 
 void modify_weight(Edge_desc arco, int weight_value) {
@@ -176,8 +171,6 @@ path_and_dist shortest_path(Vertex_desc src,
             .path = get_Path(*G, p, src, dest)};
 
     return path_distance;
-
-
 }
 
 
