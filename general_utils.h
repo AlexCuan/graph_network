@@ -10,7 +10,7 @@ void add_vertex_m() {
     cout << "Ingrese el nombre del vertice: ";
     cin >> name;
     if (!get_vertex_by_name(name, *G).found) {
-        add_node(name);
+        add_node(name, *G);
         save_vertex_to_db(name);
     } else {
         cout << "Vertice ya existente" << endl;
