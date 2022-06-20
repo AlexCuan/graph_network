@@ -1,48 +1,62 @@
 #include <iostream>
 #include "Graph.h"
-#include "db_utils.h"
-#include <stdlib.h>
+//#include "db_utils.h"
 
 
 using namespace std;
 
-
-
-
-void add_vertex_m(string name) {
-    //string name;
-    //cout << "Ingrese el nombre del vertice: ";
-    //cin >> name;
-    if (get_vertex_by_name(name, *G).found) {
-        cout << "Vertice ya existente" << endl;
-    } else {
-        Vertex_desc temp = add_node(*G);
-        modify_vertex_name(temp, name);
+void add_vertex_m() {
+    string name;
+    cout << "Ingrese el nombre del vertice: ";
+    cin >> name;
+    if (!get_vertex_by_name(name, *G).found) {
+        add_node(name);
         save_vertex_to_db(name);
-        
-        //cout << vertex_i[temp];
+    } else {
+        cout << "Vertice ya existente" << endl;
     }
-
 }
 
 void add_edge_m() {
     string from, to;
-    
+
     cout << "Ingrese el nombre del vertice de origen: ";
     cin >> from;
+
+    if (!get_vertex_by_name(from, *G).found) {
+        cout << "Vertice no existente, desea añadirlo?" << endl;
+        string answ;
+        cin >> answ;
+        if (answ == "yes") {
+            add_vertex_m();
+        } else {
+            cout << "Añadir vertice no se llevo a cabo. No se puede crear arco" << endl;
+            return;
+        }
+
+    }
     cout << "Ingrese el nombre del vertice de destino: ";
     cin >> to;
-   add_vertex_m(from);
-   add_vertex_m(to);
+
+    if (!get_vertex_by_name(to, *G).found) {
+        cout << "Vertice no existente, desea añadirlo?" << endl;
+        string answ;
+        cin >> answ;
+        if (answ == "yes") {
+            add_vertex_m();
+        } else {
+            cout << "Añadir vertice no se llevo a cabo. No se puede crear arco" << endl;
+            return;
+        }
+    }
+
 
     Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
-    
-    
 
     if (get_edge(temp.first, temp.second, *G).found) {
         cout << "Arista ya existente" << endl;
     } else {
-        add_edges(temp, *G);
+        add_edge(temp.first, temp.second, *G);
         save_edge_to_db(from, to);
     }
 }
@@ -106,21 +120,21 @@ void get_shortest_path() {
         for (std::size_t i = 0; i < dist.path.size(); i++) {
             cout << vertex_i(dist.path[i]) << " <-- ";
         }
-        cout<<endl;
+        cout << endl;
     } else {
         cout << "No existe uno de los vertices" << endl;
     }
 }
 
-void get_adjacent_vertices(){
+void get_adjacent_vertices() {
     string name;
     cout << "Ingrese el nombre del vertice: ";
     cin >> name;
     vertex_struct a = get_vertex_by_name(name, *G);
     if (a.found) {
         cout << "Vertices adyacentes: " << endl;
-            retrieve_adjacent_vertices(a.vertex, *G);
-        cout<<endl;
+        retrieve_adjacent_vertices(a.vertex, *G);
+        cout << endl;
     } else {
         cout << "No existe el vertice" << endl;
     }
