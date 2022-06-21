@@ -110,9 +110,9 @@ void add_node(string name, Graph &referenced_graph) {
     modify_vertex_name(temp, name);
 }
 
-void remove_node(Vertex_desc vertex, Graph &referenced_graph) {
-    remove_vertex(vertex, referenced_graph);
-}
+//void remove_node(Vertex_desc vertex, Graph &referenced_graph) {
+//    remove_vertex(vertex, referenced_graph);
+//}
 
 void remove_Edge(Vertex_desc v1, Vertex_desc v2, Graph &referenced_graph) {
     remove_edge(v1, v2, referenced_graph);
@@ -173,6 +173,14 @@ path_and_dist shortest_path(Vertex_desc src,
     return path_distance;
 }
 
-
-
+void graph_builder(){
+    vector_vertices v = retrieve_vertex_from_db();
+    for(int i = 0; i < v.size(); i++){
+        add_node(v[i].name, *G);
+    }
+    vector_edges e = retrieve_edge_from_db();
+    for(int i = 0; i < e.size(); i++){
+        add_edge(vertex_i[get_vertex_by_name(e[i].origin, *G).vertex], vertex_i[get_vertex_by_name(e[i].destination, *G).vertex], *G);
+    }
+}
 
