@@ -105,6 +105,21 @@ void update_edge_m() {
         cout << "No existe el arco" << endl;
     }
 }
+//
+//void delete_vertex_m() {
+//    string name;
+//    cout << "Ingrese el nombre del vertice: ";
+//    cin >> name;
+//    vertex_struct a = get_vertex_by_name(name, *G);
+//    if (a.found) {
+//        clear_node(a.vertex, *G);
+//        remove_vertex(a.vertex, *G);
+//        delete_vertex_db(name);
+//    } else {
+//        cout << "No existe el vertice" << endl;
+//    }
+//}
+
 
 void get_shortest_path() {
     string from, to;
@@ -137,5 +152,19 @@ void get_adjacent_vertices() {
         cout << endl;
     } else {
         cout << "No existe el vertice" << endl;
+    }
+}
+
+void print_vertices(){
+    for (vp = vertices(*G); vp.first != vp.second; ++vp.first) {
+        cout << "Vertex: " << vertex_i[*vp.first] << " Name: " << name_node[*vp.first] << endl;
+    }
+}
+
+void print_edges() {
+    int i = 0;
+    for (tie(ei, ei_end) = edges(*G); ei != ei_end; ++ei) {
+        cout <<"Edge #"<<i<<" from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] << endl;
+        i++;
     }
 }
