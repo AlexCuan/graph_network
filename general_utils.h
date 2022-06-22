@@ -105,20 +105,20 @@ void update_edge_m() {
         cout << "No existe el arco" << endl;
     }
 }
-//
-//void delete_vertex_m() {
-//    string name;
-//    cout << "Ingrese el nombre del vertice: ";
-//    cin >> name;
-//    vertex_struct a = get_vertex_by_name(name, *G);
-//    if (a.found) {
-//        clear_node(a.vertex, *G);
-//        remove_vertex(a.vertex, *G);
-//        delete_vertex_db(name);
-//    } else {
-//        cout << "No existe el vertice" << endl;
-//    }
-//}
+
+void delete_vertex_m() {
+    string name;
+    cout << "Ingrese el nombre del vertice: ";
+    cin >> name;
+    vertex_struct a = get_vertex_by_name(name, *G);
+    if (a.found) {
+        clear_node(a.vertex, *G);
+        remove_vertex(a.vertex, *G);
+        delete_vertex_from_db(name);
+    } else {
+        cout << "No existe el vertice" << endl;
+    }
+}
 
 
 void get_shortest_path() {
