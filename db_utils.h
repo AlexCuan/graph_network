@@ -73,36 +73,6 @@ void save_edge_to_db(string origin, string destination, int weight = 0) {
     sqlite3_close(db);
 }
 
-//TO-DO: Add on-cascade delete
-void delete_vertex_from_db(string vertex_name) {
-    sqlite3 *db;
-    string sql = "DELETE FROM VERTEX WHERE NAME='" + vertex_name + "';";
-    int exit = sqlite3_open("test.db", &db);
-    char *messageError;
-    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if (exit != SQLITE_OK) {
-        cerr << "Error" << messageError << endl;
-        sqlite3_free(messageError);
-    } else {
-        cout << "Vertex deleted successfully" << endl;
-    }
-    sqlite3_close(db);
-}
-
-void delete_edge_from_db(string origin, string destination) {
-    sqlite3 *db;
-    string sql = "DELETE FROM EDGE WHERE ORIGIN='" + origin + "' AND DESTINATION='" + destination + "';";
-    int exit = sqlite3_open("test.db", &db);
-    char *messageError;
-    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if (exit != SQLITE_OK) {
-        cerr << "Error" << messageError << endl;
-        sqlite3_free(messageError);
-    } else {
-        cout << "Edge deleted successfully" << endl;
-    }
-    sqlite3_close(db);
-}
 
 vector_vertices retrieve_vertex_from_db() {
     sqlite3 *db;
@@ -167,6 +137,36 @@ void update_edge_db(int origin, int destination, int weight, int new_origin, int
         sqlite3_free(messageError);
     } else {
         cout << "Edge updated successfully" << endl;
+    }
+    sqlite3_close(db);
+}
+
+void delete_vertex_from_db(string vertex_name) {
+    sqlite3 *db;
+    string sql = "DELETE FROM VERTEX WHERE NAME='" + vertex_name + "';";
+    int exit = sqlite3_open("test.db", &db);
+    char *messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
+        sqlite3_free(messageError);
+    } else {
+        cout << "Vertex deleted successfully" << endl;
+    }
+    sqlite3_close(db);
+}
+
+void delete_edge_from_db(string origin, string destination) {
+    sqlite3 *db;
+    string sql = "DELETE FROM EDGE WHERE ORIGIN='" + origin + "' AND DESTINATION='" + destination + "';";
+    int exit = sqlite3_open("test.db", &db);
+    char *messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
+        sqlite3_free(messageError);
+    } else {
+        cout << "Edge deleted successfully" << endl;
     }
     sqlite3_close(db);
 }
