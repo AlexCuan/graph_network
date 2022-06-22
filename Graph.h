@@ -91,12 +91,16 @@ vertex_struct get_vertex_by_name(string vertex_name, Graph &referenced_graph) {
     return vertex;
 }
 
-edge_struct get_edge(int from, int to, Graph &referenced_graph) {
+edge_struct get_edge(string from, string to, Graph &referenced_graph) {
     edge_struct edge;
+    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex],
+                          vertex_i[get_vertex_by_name(to, *G).vertex]);
+
+
     for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei) {
-        if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to) ||
-            (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to)) {
-            //return *ei;
+        if ((vertex_i[source(*ei, referenced_graph)] == temp.first && vertex_i[target(*ei, referenced_graph)] == temp.second) ||
+            (vertex_i[target(*ei, referenced_graph)] == temp.first && vertex_i[source(*ei, referenced_graph)] == temp.second)) {
+
             edge.found = true;
             edge.edge = *ei;
             return edge;
