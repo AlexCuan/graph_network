@@ -1,170 +1,174 @@
 #include "iostream"
 #include "SQL/sqlite3.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
-void create_tables(){
-    sqlite3* db;
+typedef struct edge_data {
+    string origin;
+    string destination;
+    int weight;
+} edge_data;
+
+typedef struct vertex_data {
+    string name;
+} vertex_data;
+
+typedef vector<edge_data> vector_edges;
+typedef vector<vertex_data> vector_vertices;
+
+void create_tables() {
+    sqlite3 *db;
 
     string sql = "CREATE TABLE IF NOT EXISTS VERTEX("
                  "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                  "NAME CHAR[4] UNIQUE NOT NULL);"
                  "CREATE TABLE IF NOT EXISTS EDGE("
                  "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "ORIGIN INTEGER FOREIGNKEY REFERENCES VERTEX(ID) DEFAULT NULL,"
-                 "DESTINATION INTEGER FOREIGNKEY REFERENCES VERTEX(ID) DEFAULT NULL,"
+                 "ORIGIN STRING FOREIGNKEY REFERENCES VERTEX(NAME) ON DELETE CASCADE DEFAULT NULL,"
+                 "DESTINATION STRING FOREIGNKEY REFERENCES VERTEX(NAME) ON DELETE CASCADE DEFAULT NULL,"
                  "WEIGHT INTEGER DEFAULT NULL);";
     int exit;
     exit = sqlite3_open("test.db", &db);
-    char* messageError;
+    char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if(exit != SQLITE_OK){
+    if (exit != SQLITE_OK) {
         cout << "Error: " << messageError << endl;
-    }
-    else{
+    } else {
         cout << "Table created successfully" << endl;
     }
     sqlite3_close(db);
 }
 
-void save_vertex_to_db(string vertex_name){
-    sqlite3* db;
-    string sql ="INSERT INTO VERTEX(NAME) VALUES('"+vertex_name+"');";
+void save_vertex_to_db(string vertex_name) {
+    sqlite3 *db;
+    string sql = "INSERT INTO VERTEX(NAME) VALUES('" + vertex_name + "');";
     int exit = sqlite3_open("test.db", &db);
-    char* messageError;
+    char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
-    }
-    else{
+    } else {
         cout << "Vertex added successfully" << endl;
     }
     sqlite3_close(db);
 }
 
-void save_edge_to_db(int origin, int destination, int weight){
-    sqlite3* db;
-    string sql ="PRAGMA foreign_keys = ON;"
-                "INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES("+to_string(origin)+","+to_string(destination)+","+to_string(weight)+");";
+void save_edge_to_db(string origin, string destination, int weight = 0) {
+    sqlite3 *db;
+    string sql = "PRAGMA foreign_keys = ON;"
+                 "INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES('" + origin + "','" + destination + "','" +
+                 to_string(weight) + "');";
     int exit = sqlite3_open("test.db", &db);
-    char* messageError;
+    char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
-    }
-    else{
+    } else {
         cout << "Edge added successfully" << endl;
     }
     sqlite3_close(db);
 }
-//TO-DO: Add on-cascade delete
-void delete_vertex_from_db(string vertex_name){
-    sqlite3* db;
-    string sql ="DELETE FROM VERTEX WHERE NAME='"+vertex_name+"';";
+
+
+vector_vertices retrieve_vertex_from_db() {
+    sqlite3 *db;
     int exit = sqlite3_open("test.db", &db);
-    char* messageError;
+    sqlite3_stmt *stmt;;
+
+    sqlite3_prepare_v2(db, "SELECT * FROM VERTEX;", -1, &stmt, 0);
+    vertex_data e;
+    vector_vertices vector_vertices;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        e.name = (char *) sqlite3_column_text(stmt, 1);
+        vector_vertices.push_back(e);
+    }
+    sqlite3_finalize(stmt);
+    return vector_vertices;
+}
+
+vector_edges retrieve_edge_from_db() {
+    sqlite3 *db;
+    int exit = sqlite3_open("test.db", &db);
+    sqlite3_stmt *stmt;;
+
+    sqlite3_prepare_v2(db, "SELECT * FROM EDGE;", -1, &stmt, 0);
+    edge_data e;
+    vector_edges edges_vector;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        e.origin = (char *) sqlite3_column_text(stmt, 1);
+        e.destination = (char *) sqlite3_column_text(stmt, 2);
+        e.weight = sqlite3_column_int(stmt, 3);
+        edges_vector.push_back(e);
+    }
+    sqlite3_finalize(stmt);
+    return edges_vector;
+}
+
+void update_vertex_db(string vertex_name, string new_name) {
+    sqlite3 *db;
+    string sql = "UPDATE VERTEX SET NAME='" + new_name + "' WHERE NAME='" + vertex_name + "';";
+    int exit = sqlite3_open("test.db", &db);
+    char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
-    }
-    else{
-        cout << "Vertex deleted successfully" << endl;
-    }
-    sqlite3_close(db);
-}
-
-void delete_edge_from_db(int origin, int destination){
-    sqlite3* db;
-    string sql ="DELETE FROM EDGE WHERE ORIGIN="+to_string(origin)+" AND DESTINATION="+to_string(destination)+";";
-    int exit = sqlite3_open("test.db", &db);
-    char* messageError;
-    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
-        sqlite3_free(messageError);
-    }
-    else{
-        cout << "Edge deleted successfully" << endl;
-    }
-    sqlite3_close(db);
-}
-
-//argc: holds the number of results
-//azColName: holds each column returned in array
-//argv holds each value in array
-//TO-DO Pass "&" values for arrays containing column and value
-static int callback (void* NotUsed, int argc, char** argv, char** azColName){
-    int i;
-    for(i=0; i<argc; i++){
-        cout << azColName[i] << " = " << argv[i] << endl;
-    }
-    cout << endl;
-    return 0;
-}
-
-void retrieve_vertex_from_db(){
-    sqlite3* db;
-    string sql = "SELECT * FROM VERTEX;";
-    int exit = sqlite3_open("test.db", &db);
-    char* messageError;
-    exit = sqlite3_exec(db, sql.c_str(), callback, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
-        sqlite3_free(messageError);
-    }
-    else{
-        cout << "Data selected successfully" << endl;
-    }
-}
-
-void retrieve_edge_from_db(){
-    sqlite3* db;
-    string sql = "SELECT * FROM EDGE;";
-    int exit = sqlite3_open("test.db", &db);
-    char* messageError;
-    exit = sqlite3_exec(db, sql.c_str(), callback, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
-        sqlite3_free(messageError);
-    }
-    else{
-        cout << "Data selected successfully" << endl;
-    }
-}
-
-void update_vertex_db(string vertex_name, string new_name){
-    sqlite3* db;
-    string sql = "UPDATE VERTEX SET NAME='"+new_name+"' WHERE NAME='"+vertex_name+"';";
-    int exit = sqlite3_open("test.db", &db);
-    char* messageError;
-    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
-        sqlite3_free(messageError);
-    }
-    else{
+    } else {
         cout << "Vertex updated successfully" << endl;
     }
     sqlite3_close(db);
 }
 
-void update_edge_db(int origin, int destination, int weight, int new_origin, int new_destination, int new_weight){
-    sqlite3* db;
+void update_edge_db(string origin, string destination, string new_origin, string new_destination, int new_weight) {
+    sqlite3 *db;
     string sql = "PRAGMA foreign_keys = ON;"
-                 "UPDATE EDGE SET ORIGIN="+to_string(new_origin)+", DESTINATION="+to_string(new_destination)+", WEIGHT="+to_string(new_weight)+" WHERE ORIGIN="+to_string(origin)+" AND DESTINATION="+to_string(destination)+" AND WEIGHT="+to_string(weight)+";";
+                 "UPDATE EDGE SET ORIGIN='" + new_origin + "', DESTINATION='" + new_destination +
+                 "', WEIGHT='" + to_string(new_weight) + "' WHERE ORIGIN='" + origin + "' AND DESTINATION='" +
+                 destination + "';";
     int exit = sqlite3_open("test.db", &db);
-    char* messageError;
+    char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
-    if(exit != SQLITE_OK){
-        cerr << "Error" << messageError <<endl;
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
+    } else {
+        cout << "Edge updated in db successfully" << endl;
     }
-    else{
-        cout << "Edge updated successfully" << endl;
+    sqlite3_close(db);
+}
+
+void delete_vertex_from_db(string vertex_name) {
+    sqlite3 *db;
+    string sql = "PRAGMA foreign_keys = ON;"
+            "DELETE FROM VERTEX WHERE NAME='" + vertex_name + "';";
+    int exit = sqlite3_open("test.db", &db);
+    char *messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
+        sqlite3_free(messageError);
+    } else {
+        cout << "Vertex deleted successfully" << endl;
+    }
+    sqlite3_close(db);
+}
+
+void delete_edge_from_db(string origin, string destination) {
+    sqlite3 *db;
+    string sql = "PRAGMA foreign_keys = ON;"
+            "DELETE FROM EDGE WHERE ORIGIN='" + origin + "' AND DESTINATION='" + destination + "';";
+    int exit = sqlite3_open("test.db", &db);
+    char *messageError;
+    exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
+    if (exit != SQLITE_OK) {
+        cerr << "Error" << messageError << endl;
+        sqlite3_free(messageError);
+    } else {
+        cout << "Edge deleted successfully" << endl;
     }
     sqlite3_close(db);
 }
