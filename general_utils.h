@@ -50,10 +50,9 @@ void add_edge_m() {
         }
     }
 
-
     Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
 
-    if (get_edge(temp.first, temp.second, *G).found) {
+    if (get_edge(from, to, *G).found) {
         cout << "Arista ya existente" << endl;
     } else {
         add_edge(temp.first, temp.second, *G);
@@ -81,26 +80,32 @@ void update_vertex_m() {
 }
 
 void update_edge_m() {
-    Edge actual_edge;
-    Edge new_edge;
     int weight;
-    string temp;
-    cout << "Ingrese el arco actual: " << endl;
-    cin >> actual_edge.first >> actual_edge.second;
-    cout << "Ingrese el arco nuevo: " << endl;
-    cin >> new_edge.first >> new_edge.second;
-    cout << "Desea cambiar el peso?" << endl;
-    cin >> temp;
-    if (temp == "si") {
-        cout << "Ingrese el peso: " << endl;
-        cin >> weight;
-    }
-    edge_struct a = get_edge(actual_edge.first, actual_edge.second, *G);
+    string temp_answ, from_old, to_old, from_new, to_new;
+    cout << "Introduzca el arco viejo: ";
+    cin >> from_old >> to_old;
+
+//    Edge temp = make_pair(vertex_i[get_vertex_by_name(from_old, *G).vertex], vertex_i[get_vertex_by_name(to_old, *G).vertex]);
+    edge_struct a = get_edge(from_old, to_old, *G);
+
     if (a.found) {
-        update_edge_db(actual_edge.first, actual_edge.second, edge_weight_map[a.edge], new_edge.first, new_edge.second,
-                       weight);
+        cout << "Introduzca el arco nuevo: ";
+        cin >> from_new >> to_new;
+
+        cout << "Desea cambiar el peso?" << endl;
+        cin >> temp_answ;
+
+        if (temp_answ == "si") {
+            cout << "Ingrese el peso: " << endl;
+            cin >> weight;
+        }
+
+        Edge actual_edge = make_pair(vertex_i[get_vertex_by_name(from_old, *G).vertex], vertex_i[get_vertex_by_name(to_old, *G).vertex]);
+        Edge new_edge = make_pair(vertex_i[get_vertex_by_name(from_new, *G).vertex], vertex_i[get_vertex_by_name(to_new, *G).vertex]);
+
         modify_weight(a.edge, weight);
         update_edge(actual_edge, new_edge);
+        update_edge_db(from_old, to_old, from_new, to_new, weight);
     } else {
         cout << "No existe el arco" << endl;
     }
