@@ -26,8 +26,8 @@ void create_tables() {
                  "NAME CHAR[4] UNIQUE NOT NULL);"
                  "CREATE TABLE IF NOT EXISTS EDGE("
                  "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "ORIGIN STRING FOREIGNKEY REFERENCES VERTEX(NAME) DEFAULT NULL,"
-                 "DESTINATION STRING FOREIGNKEY REFERENCES VERTEX(NAME) DEFAULT NULL,"
+                 "ORIGIN STRING FOREIGNKEY REFERENCES VERTEX(NAME) ON DELETE CASCADE DEFAULT NULL,"
+                 "DESTINATION STRING FOREIGNKEY REFERENCES VERTEX(NAME) ON DELETE CASCADE DEFAULT NULL,"
                  "WEIGHT INTEGER DEFAULT NULL);";
     int exit;
     exit = sqlite3_open("test.db", &db);
@@ -143,7 +143,8 @@ void update_edge_db(int origin, int destination, int weight, int new_origin, int
 
 void delete_vertex_from_db(string vertex_name) {
     sqlite3 *db;
-    string sql = "DELETE FROM VERTEX WHERE NAME='" + vertex_name + "';";
+    string sql = "PRAGMA foreign_keys = ON;"
+            "DELETE FROM VERTEX WHERE NAME='" + vertex_name + "';";
     int exit = sqlite3_open("test.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
@@ -158,7 +159,8 @@ void delete_vertex_from_db(string vertex_name) {
 
 void delete_edge_from_db(string origin, string destination) {
     sqlite3 *db;
-    string sql = "DELETE FROM EDGE WHERE ORIGIN='" + origin + "' AND DESTINATION='" + destination + "';";
+    string sql = "PRAGMA foreign_keys = ON;"
+            "DELETE FROM EDGE WHERE ORIGIN='" + origin + "' AND DESTINATION='" + destination + "';";
     int exit = sqlite3_open("test.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
