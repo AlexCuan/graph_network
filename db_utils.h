@@ -123,12 +123,12 @@ void update_vertex_db(string vertex_name, string new_name) {
     sqlite3_close(db);
 }
 
-void update_edge_db(int origin, int destination, int weight, int new_origin, int new_destination, int new_weight) {
+void update_edge_db(string origin, string destination, string new_origin, string new_destination, int new_weight) {
     sqlite3 *db;
     string sql = "PRAGMA foreign_keys = ON;"
-                 "UPDATE EDGE SET ORIGIN=" + to_string(new_origin) + ", DESTINATION=" + to_string(new_destination) +
-                 ", WEIGHT=" + to_string(new_weight) + " WHERE ORIGIN=" + to_string(origin) + " AND DESTINATION=" +
-                 to_string(destination) + " AND WEIGHT=" + to_string(weight) + ";";
+                 "UPDATE EDGE SET ORIGIN='" + new_origin + "', DESTINATION='" + new_destination +
+                 "', WEIGHT='" + to_string(new_weight) + "' WHERE ORIGIN='" + origin + "' AND DESTINATION='" +
+                 destination + "';";
     int exit = sqlite3_open("test.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
@@ -136,7 +136,7 @@ void update_edge_db(int origin, int destination, int weight, int new_origin, int
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Edge updated successfully" << endl;
+        cout << "Edge updated in db successfully" << endl;
     }
     sqlite3_close(db);
 }
