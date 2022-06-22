@@ -120,6 +120,28 @@ void delete_vertex_m() {
     }
 }
 
+void delete_edge_m(){
+    string from;
+    string to;
+    cout <<"Introduzca el vertice de origen: ";
+    cin>>from;
+    cout<<"Introduzca el vertice de destino: ";
+    cin>>to;
+
+    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
+    edge_struct a = get_edge(temp.first, temp.second, *G);
+
+    if (a.found){
+        remove_edge(a.edge, *G);
+        delete_edge_from_db(from, to);
+        clog <<"Edge deleted successfully";
+    }
+    else{
+        cout<<"Edge doesn't exists"<<endl;
+    }
+
+}
+
 
 void get_shortest_path() {
     string from, to;
