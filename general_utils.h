@@ -125,24 +125,23 @@ void delete_vertex_m() {
     }
 }
 
-void delete_edge_m(){
+void delete_edge_m() {
     string from;
     string to;
-    cout <<"Introduzca el vertice de origen: ";
-    cin>>from;
-    cout<<"Introduzca el vertice de destino: ";
-    cin>>to;
+    cout << "Introduzca el vertice de origen: ";
+    cin >> from;
+    cout << "Introduzca el vertice de destino: ";
+    cin >> to;
 
-    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
-    edge_struct a = get_edge(temp.first, temp.second, *G);
+//    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
+    edge_struct a = get_edge(from, to, *G);
 
-    if (a.found){
+    if (a.found) {
         remove_edge(a.edge, *G);
         delete_edge_from_db(from, to);
-        clog <<"Edge deleted successfully";
-    }
-    else{
-        cout<<"Edge doesn't exists"<<endl;
+        clog << "Edge deleted successfully";
+    } else {
+        cout << "Edge doesn't exists" << endl;
     }
 
 }
@@ -182,7 +181,7 @@ void get_adjacent_vertices() {
     }
 }
 
-void print_vertices(){
+void print_vertices() {
     for (vp = vertices(*G); vp.first != vp.second; ++vp.first) {
         cout << "Vertex: " << vertex_i[*vp.first] << " Name: " << name_node[*vp.first] << endl;
     }
@@ -191,7 +190,7 @@ void print_vertices(){
 void print_edges() {
     int i = 0;
     for (tie(ei, ei_end) = edges(*G); ei != ei_end; ++ei) {
-        cout <<"Edge #"<<i<<" from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] << endl;
+        cout << "Edge #" << i << " from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] << endl;
         i++;
     }
 }
