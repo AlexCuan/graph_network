@@ -1,9 +1,27 @@
 #include <iostream>
 #include "Graph.h"
+#include <limits.h>
+#include <vector>
 //#include "db_utils.h"
 
 
 using namespace std;
+
+template<typename T>
+T &validateInput(T &val) {
+    while (true) {
+
+        if (cin >> val && val > 0 ) {
+            break;
+        } else {
+            cout << "Enter a valid integer value!: ";
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+    return val;
+}
+
 
 void add_vertex_m() {
     string name;
@@ -24,10 +42,10 @@ void add_edge_m() {
     cin >> from;
 
     if (!get_vertex_by_name(from, *G).found) {
-        cout << "Vertice no existente, desea añadirlo?" << endl;
+        cout << "Vertice no existente, desea añadirlo? [Yes/No]" << endl;
         string answ;
         cin >> answ;
-        if (answ == "yes") {
+        if ((answ == "yes")&&(answ == "Yes")) {
             add_vertex_m();
         } else {
             cout << "Añadir vertice no se llevo a cabo. No se puede crear arco" << endl;
@@ -93,7 +111,9 @@ void update_edge_m() {
     cin >> temp;
     if (temp == "si") {
         cout << "Ingrese el peso: " << endl;
-        cin >> weight;
+       // cin >> weight;
+       weight = validateInput_int(weight);
+
     }
     edge_struct a = get_edge(actual_edge.first, actual_edge.second, *G);
     if (a.found) {
@@ -168,3 +188,5 @@ void print_edges() {
         i++;
     }
 }
+
+
