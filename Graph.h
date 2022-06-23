@@ -170,7 +170,6 @@ path_and_dist shortest_path(Vertex_desc src,
                                                                                              *G))).distance_map(
                                     boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, *G))));
 
-
     path_and_dist path_distance = {.dist = d[dest],
             .path = get_Path(*G, p, src, dest)};
 
@@ -184,7 +183,9 @@ void graph_builder(){
     }
     vector_edges e = retrieve_edge_from_db();
     for(int i = 0; i < e.size(); i++){
-        add_edge(vertex_i[get_vertex_by_name(e[i].origin, *G).vertex], vertex_i[get_vertex_by_name(e[i].destination, *G).vertex], *G);
+        Edge temp = make_pair(vertex_i[get_vertex_by_name(e[i].origin, *G).vertex], vertex_i[get_vertex_by_name(e[i].destination, *G).vertex]);
+        pair<Edge_desc, bool>a = add_edge(temp.first, temp.second, *G);
+        modify_weight(a.first,e[i].weight);
     }
 }
 

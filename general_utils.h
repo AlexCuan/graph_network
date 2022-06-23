@@ -157,9 +157,9 @@ void get_shortest_path() {
     vertex_struct b = get_vertex_by_name(to, *G);
     if (a.found && b.found) {
         path_and_dist dist = shortest_path(a.vertex, b.vertex);
-//        cout<<"El camino mas corto es de: "<<dist.dist<<" nodos y: "<<dist.dist - 1<<" vertices"<<endl;
+
         for (std::size_t i = 0; i < dist.path.size(); i++) {
-            cout << vertex_i(dist.path[i]) << " <-- ";
+            cout << vertex_i(dist.path[i]) << " --> ";
         }
         cout << endl;
     } else {
@@ -190,7 +190,8 @@ void print_vertices() {
 void print_edges() {
     int i = 0;
     for (tie(ei, ei_end) = edges(*G); ei != ei_end; ++ei) {
-        cout << "Edge #" << i << " from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] << endl;
+        cout << "Edge #" << i << " from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] <<", weight: "<<
+        edge_weight_map[*ei]<< endl;
         i++;
     }
 }
