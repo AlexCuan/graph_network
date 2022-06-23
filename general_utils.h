@@ -112,7 +112,7 @@ void update_edge_m() {
     if (temp == "si") {
         cout << "Ingrese el peso: " << endl;
        // cin >> weight;
-       weight = validateInput_int(weight);
+       weight = validateInput(weight);
 
     }
     edge_struct a = get_edge(actual_edge.first, actual_edge.second, *G);
