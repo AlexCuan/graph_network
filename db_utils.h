@@ -31,14 +31,12 @@ void create_tables() {
                  "DESTINATION STRING FOREIGNKEY REFERENCES VERTEX(NAME) ON DELETE CASCADE DEFAULT NULL,"
                  "WEIGHT INTEGER DEFAULT NULL);";
     int exit;
-    exit = sqlite3_open("test.db", &db);
+    exit = sqlite3_open("data.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
         cout << "Error: " << messageError << endl;
         sqlite3_free(messageError);
-    } else {
-        cout << "Table created successfully" << endl;
     }
     sqlite3_close(db);
 }
@@ -46,7 +44,7 @@ void create_tables() {
 void save_vertex_to_db(string vertex_name) {
     sqlite3 *db;
     string sql = "INSERT INTO VERTEX(NAME) VALUES('" + vertex_name + "');";
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -63,7 +61,7 @@ void save_edge_to_db(string origin, string destination, int weight = 0) {
     string sql = "PRAGMA foreign_keys = ON;"
                  "INSERT INTO EDGE(ORIGIN, DESTINATION, WEIGHT) VALUES('" + origin + "','" + destination + "','" +
                  to_string(weight) + "');";
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -78,7 +76,7 @@ void save_edge_to_db(string origin, string destination, int weight = 0) {
 
 vector_vertices retrieve_vertex_from_db() {
     sqlite3 *db;
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     sqlite3_stmt *stmt;;
 
     sqlite3_prepare_v2(db, "SELECT * FROM VERTEX;", -1, &stmt, 0);
@@ -94,7 +92,7 @@ vector_vertices retrieve_vertex_from_db() {
 
 vector_edges retrieve_edge_from_db() {
     sqlite3 *db;
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     sqlite3_stmt *stmt;;
 
     sqlite3_prepare_v2(db, "SELECT * FROM EDGE;", -1, &stmt, 0);
@@ -113,7 +111,7 @@ vector_edges retrieve_edge_from_db() {
 void update_vertex_db(string vertex_name, string new_name) {
     sqlite3 *db;
     string sql = "UPDATE VERTEX SET NAME='" + new_name + "' WHERE NAME='" + vertex_name + "';";
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -131,7 +129,7 @@ void update_edge_db(string origin, string destination, string new_origin, string
                  "UPDATE EDGE SET ORIGIN='" + new_origin + "', DESTINATION='" + new_destination +
                  "', WEIGHT='" + to_string(new_weight) + "' WHERE ORIGIN='" + origin + "' AND DESTINATION='" +
                  destination + "';";
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -147,7 +145,7 @@ void delete_vertex_from_db(string vertex_name) {
     sqlite3 *db;
     string sql = "PRAGMA foreign_keys = ON;"
             "DELETE FROM VERTEX WHERE NAME='" + vertex_name + "';";
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -163,7 +161,7 @@ void delete_edge_from_db(string origin, string destination) {
     sqlite3 *db;
     string sql = "PRAGMA foreign_keys = ON;"
             "DELETE FROM EDGE WHERE ORIGIN='" + origin + "' AND DESTINATION='" + destination + "';";
-    int exit = sqlite3_open("test.db", &db);
+    int exit = sqlite3_open("data.db", &db);
     char *messageError;
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -180,7 +178,7 @@ void delete_edge_from_db(string origin, string destination) {
 //void create_db() {
 //    sqlite3 *db;
 //    int exit = 0;
-//    exit = sqlite3_open("test.db", &db);
+//    exit = sqlite3_open("data.db", &db);
 //    if (exit == SQLITE_OK) {
 //        cout << "Created db successfully\n";
 //    } else {

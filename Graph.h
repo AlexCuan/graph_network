@@ -169,10 +169,10 @@ vector<Vertex_desc> get_Path(
 }
 
 path_and_dist shortest_path(Vertex_desc src,
-                            Vertex_desc dest)
+                            Vertex_desc dest, Graph &referenced_graph)
 { // determina el camino mas corto desde un vertice hacia todos los demas del grafo
-    vector<Vertex_desc> p(num_vertices(*G));
-    vector<int> d(num_vertices(*G));
+    vector<Vertex_desc> p(num_vertices(referenced_graph));
+    vector<int> d(num_vertices(referenced_graph));
     Vertex_desc s = vertex(src, *G);
     dijkstra_shortest_paths(*G, src,
                             predecessor_map(boost::make_iterator_property_map(p.begin(), get(boost::vertex_index,
@@ -188,6 +188,7 @@ path_and_dist shortest_path(Vertex_desc src,
 
 void graph_builder()
 {
+    cout <<"Cargando datos desde la base de datos"<<endl;
     vector_vertices v = retrieve_vertex_from_db();
     for (int i = 0; i < v.size(); i++)
     {
