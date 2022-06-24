@@ -11,7 +11,7 @@ template<typename T>
 T &validateInput(T &val) {
     while (true) {
 
-        if (cin >> val && val > 0 ) {
+        if (cin >> val && val > 0) {
             break;
         } else {
             cout << "Enter a valid integer value!: ";
@@ -22,6 +22,10 @@ T &validateInput(T &val) {
     return val;
 }
 
+void pause_f() {
+    cout << "Presione enter para continuar ..." << endl;
+    getchar();
+}
 
 void add_vertex_m() {
     string name;
@@ -45,7 +49,7 @@ void add_edge_m() {
         cout << "Vertice no existente, desea añadirlo? [Yes/No]" << endl;
         string answ;
         cin >> answ;
-        if ((answ == "yes")&&(answ == "Yes")) {
+        if (answ == "yes") {
             add_vertex_m();
         } else {
             cout << "Añadir vertice no se llevo a cabo. No se puede crear arco" << endl;
@@ -119,8 +123,10 @@ void update_edge_m() {
             cin >> weight;
         }
 
-        Edge actual_edge = make_pair(vertex_i[get_vertex_by_name(from_old, *G).vertex], vertex_i[get_vertex_by_name(to_old, *G).vertex]);
-        Edge new_edge = make_pair(vertex_i[get_vertex_by_name(from_new, *G).vertex], vertex_i[get_vertex_by_name(to_new, *G).vertex]);
+        Edge actual_edge = make_pair(vertex_i[get_vertex_by_name(from_old, *G).vertex],
+                                     vertex_i[get_vertex_by_name(to_old, *G).vertex]);
+        Edge new_edge = make_pair(vertex_i[get_vertex_by_name(from_new, *G).vertex],
+                                  vertex_i[get_vertex_by_name(to_new, *G).vertex]);
 
         modify_weight(a.edge, weight);
         update_edge(actual_edge, new_edge);
@@ -136,7 +142,7 @@ void delete_vertex_m() {
     cin >> name;
     vertex_struct a = get_vertex_by_name(name, *G);
     if (a.found) {
-        clear_node(a.vertex, *G);
+        clear_vertex(a.vertex, *G);
         remove_vertex(a.vertex, *G);
         delete_vertex_from_db(name);
     } else {
@@ -204,15 +210,25 @@ void print_vertices() {
     for (vp = vertices(*G); vp.first != vp.second; ++vp.first) {
         cout << "Vertex: " << vertex_i[*vp.first] << " Name: " << name_node[*vp.first] << endl;
     }
+    pause_f();
 }
 
 void print_edges() {
     int i = 0;
     for (tie(ei, ei_end) = edges(*G); ei != ei_end; ++ei) {
-        cout << "Edge #" << i << " from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] <<", weight: "<<
-        edge_weight_map[*ei]<< endl;
+        cout << "Edge #" << i << " from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)]
+             << ", weight: " <<
+             edge_weight_map[*ei] << endl;
         i++;
     }
+pause_f();}
+
+void clean_console() {
+    system("clear");
 }
+
+
+
+
 
 

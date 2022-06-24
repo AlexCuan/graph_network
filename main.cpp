@@ -1,6 +1,5 @@
 #include<iostream>
-#include "Graph.h"
- 
+#include "menu.h"
 using namespace boost;
 using std::vector;
 using std::cout;
@@ -9,6 +8,6 @@ using std::string;
 
 
 int main() {
-    delete_vertex_from_db("V46");
+    main_menu();
     return 0;
 }
