@@ -100,15 +100,17 @@ vertex_struct get_vertex_by_name(string vertex_name, Graph &referenced_graph)
     return vertex;
 }
 
-edge_struct get_edge(int from, int to, Graph &referenced_graph)
-{
+
+edge_struct get_edge(string from, string to, Graph &referenced_graph) {
     edge_struct edge;
-    for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei)
-    {
-        if ((vertex_i[source(*ei, referenced_graph)] == from && vertex_i[target(*ei, referenced_graph)] == to) ||
-            (vertex_i[target(*ei, referenced_graph)] == from && vertex_i[source(*ei, referenced_graph)] == to))
-        {
-            // return *ei;
+    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex],
+                          vertex_i[get_vertex_by_name(to, *G).vertex]);
+
+
+    for (tie(ei, ei_end) = edges(referenced_graph); ei != ei_end; ++ei) {
+        if ((vertex_i[source(*ei, referenced_graph)] == temp.first && vertex_i[target(*ei, referenced_graph)] == temp.second) ||
+            (vertex_i[target(*ei, referenced_graph)] == temp.first && vertex_i[source(*ei, referenced_graph)] == temp.second)) {
+
             edge.found = true;
             edge.edge = *ei;
             return edge;
@@ -201,8 +203,10 @@ void graph_builder()
         add_node(v[i].name, *G);
     }
     vector_edges e = retrieve_edge_from_db();
-    for (int i = 0; i < e.size(); i++)
-    {
-        add_edge(vertex_i[get_vertex_by_name(e[i].origin, *G).vertex], vertex_i[get_vertex_by_name(e[i].destination, *G).vertex], *G);
+
+    for(int i = 0; i < e.size(); i++){
+        Edge temp = make_pair(vertex_i[get_vertex_by_name(e[i].origin, *G).vertex], vertex_i[get_vertex_by_name(e[i].destination, *G).vertex]);
+        pair<Edge_desc, bool>a = add_edge(temp.first, temp.second, *G);
+        modify_weight(a.first,e[i].weight);
     }
 }

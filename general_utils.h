@@ -68,10 +68,9 @@ void add_edge_m() {
         }
     }
 
-
     Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
 
-    if (get_edge(temp.first, temp.second, *G).found) {
+    if (get_edge(from, to, *G).found) {
         cout << "Arista ya existente" << endl;
     } else {
         add_edge(temp.first, temp.second, *G);
@@ -99,46 +98,72 @@ void update_vertex_m() {
 }
 
 void update_edge_m() {
-    Edge actual_edge;
-    Edge new_edge;
     int weight;
-    string temp;
-    cout << "Ingrese el arco actual: " << endl;
-    cin >> actual_edge.first >> actual_edge.second;
-    cout << "Ingrese el arco nuevo: " << endl;
-    cin >> new_edge.first >> new_edge.second;
-    cout << "Desea cambiar el peso?" << endl;
-    cin >> temp;
-    if (temp == "si") {
-        cout << "Ingrese el peso: " << endl;
-       // cin >> weight;
-       weight = validateInput(weight);
 
-    }
-    edge_struct a = get_edge(actual_edge.first, actual_edge.second, *G);
+    string temp_answ, from_old, to_old, from_new, to_new;
+    cout << "Introduzca el arco viejo: ";
+    cin >> from_old >> to_old;
+
+//    Edge temp = make_pair(vertex_i[get_vertex_by_name(from_old, *G).vertex], vertex_i[get_vertex_by_name(to_old, *G).vertex]);
+    edge_struct a = get_edge(from_old, to_old, *G);
+
     if (a.found) {
-        update_edge_db(actual_edge.first, actual_edge.second, edge_weight_map[a.edge], new_edge.first, new_edge.second,
-                       weight);
+        cout << "Introduzca el arco nuevo: ";
+        cin >> from_new >> to_new;
+
+        cout << "Desea cambiar el peso?" << endl;
+        cin >> temp_answ;
+
+        if (temp_answ == "si") {
+            cout << "Ingrese el peso: " << endl;
+            cin >> weight;
+        }
+
+        Edge actual_edge = make_pair(vertex_i[get_vertex_by_name(from_old, *G).vertex], vertex_i[get_vertex_by_name(to_old, *G).vertex]);
+        Edge new_edge = make_pair(vertex_i[get_vertex_by_name(from_new, *G).vertex], vertex_i[get_vertex_by_name(to_new, *G).vertex]);
+
         modify_weight(a.edge, weight);
         update_edge(actual_edge, new_edge);
+        update_edge_db(from_old, to_old, from_new, to_new, weight);
     } else {
         cout << "No existe el arco" << endl;
     }
 }
-//
-//void delete_vertex_m() {
-//    string name;
-//    cout << "Ingrese el nombre del vertice: ";
-//    cin >> name;
-//    vertex_struct a = get_vertex_by_name(name, *G);
-//    if (a.found) {
-//        clear_node(a.vertex, *G);
-//        remove_vertex(a.vertex, *G);
-//        delete_vertex_db(name);
-//    } else {
-//        cout << "No existe el vertice" << endl;
-//    }
-//}
+
+void delete_vertex_m() {
+    string name;
+    cout << "Ingrese el nombre del vertice: ";
+    cin >> name;
+    vertex_struct a = get_vertex_by_name(name, *G);
+    if (a.found) {
+        clear_node(a.vertex, *G);
+        remove_vertex(a.vertex, *G);
+        delete_vertex_from_db(name);
+    } else {
+        cout << "No existe el vertice" << endl;
+    }
+}
+
+void delete_edge_m() {
+    string from;
+    string to;
+    cout << "Introduzca el vertice de origen: ";
+    cin >> from;
+    cout << "Introduzca el vertice de destino: ";
+    cin >> to;
+
+//    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
+    edge_struct a = get_edge(from, to, *G);
+
+    if (a.found) {
+        remove_edge(a.edge, *G);
+        delete_edge_from_db(from, to);
+        clog << "Edge deleted successfully";
+    } else {
+        cout << "Edge doesn't exists" << endl;
+    }
+
+}
 
 
 void get_shortest_path() {
@@ -151,9 +176,9 @@ void get_shortest_path() {
     vertex_struct b = get_vertex_by_name(to, *G);
     if (a.found && b.found) {
         path_and_dist dist = shortest_path(a.vertex, b.vertex);
-//        cout<<"El camino mas corto es de: "<<dist.dist<<" nodos y: "<<dist.dist - 1<<" vertices"<<endl;
+
         for (std::size_t i = 0; i < dist.path.size(); i++) {
-            cout << vertex_i(dist.path[i]) << " <-- ";
+            cout << vertex_i(dist.path[i]) << " --> ";
         }
         cout << endl;
     } else {
@@ -175,7 +200,7 @@ void get_adjacent_vertices() {
     }
 }
 
-void print_vertices(){
+void print_vertices() {
     for (vp = vertices(*G); vp.first != vp.second; ++vp.first) {
         cout << "Vertex: " << vertex_i[*vp.first] << " Name: " << name_node[*vp.first] << endl;
     }
@@ -184,7 +209,8 @@ void print_vertices(){
 void print_edges() {
     int i = 0;
     for (tie(ei, ei_end) = edges(*G); ei != ei_end; ++ei) {
-        cout <<"Edge #"<<i<<" from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] << endl;
+        cout << "Edge #" << i << " from: " << vertex_i[source(*ei, *G)] << " to: " << vertex_i[target(*ei, *G)] <<", weight: "<<
+        edge_weight_map[*ei]<< endl;
         i++;
     }
 }
