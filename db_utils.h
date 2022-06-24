@@ -173,18 +173,4 @@ void delete_edge_from_db(string origin, string destination) {
     sqlite3_close(db);
 }
 
-// Actually unused function
-
-//void create_db() {
-//    sqlite3 *db;
-//    int exit = 0;
-//    exit = sqlite3_open("data.db", &db);
-//    if (exit == SQLITE_OK) {
-//        cout << "Created db successfully\n";
-//    } else {
-//        cout << "Failed to create db\n";
-//    }
-//    sqlite3_close(db);
-//    cout <<"Connection closed\n";
-//}
 
