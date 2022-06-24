@@ -125,15 +125,6 @@ void add_node(string name, Graph &referenced_graph)
     modify_vertex_name(temp, name);
 }
 
-// void remove_node(Vertex_desc vertex, Graph &referenced_graph) {
-//     remove_vertex(vertex, referenced_graph);
-// }
-
-//void remove_Edge(Vertex_desc v1, Vertex_desc v2, Graph &referenced_graph)
-//{
-    //remove_edge(v1, v2, referenced_graph);
-//}
-
 void update_edge(Edge actual_edge, Edge new_edge)
 {
     remove_edge(vertex_i[actual_edge.first], vertex_i[actual_edge.second], *G);

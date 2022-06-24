@@ -2,7 +2,7 @@
 #include "SQL/sqlite3.h"
 #include <string>
 #include <vector>
-
+#include "validators_and_tools.h"
 using namespace std;
 
 typedef struct edge_data {
@@ -17,6 +17,7 @@ typedef struct vertex_data {
 
 typedef vector<edge_data> vector_edges;
 typedef vector<vertex_data> vector_vertices;
+
 
 void create_tables() {
     sqlite3 *db;
@@ -35,6 +36,7 @@ void create_tables() {
     exit = sqlite3_exec(db, sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
         cout << "Error: " << messageError << endl;
+        sqlite3_free(messageError);
     } else {
         cout << "Table created successfully" << endl;
     }
@@ -51,7 +53,7 @@ void save_vertex_to_db(string vertex_name) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Vertex added successfully" << endl;
+        cout << "Vertex added successfully to db" << endl;
     }
     sqlite3_close(db);
 }
@@ -68,7 +70,7 @@ void save_edge_to_db(string origin, string destination, int weight = 0) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Edge added successfully" << endl;
+        cout << "Edge added successfully to db" << endl;
     }
     sqlite3_close(db);
 }
@@ -118,7 +120,7 @@ void update_vertex_db(string vertex_name, string new_name) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Vertex updated successfully" << endl;
+        cout << "Vertex updated successfully in db" << endl;
     }
     sqlite3_close(db);
 }
@@ -152,7 +154,7 @@ void delete_vertex_from_db(string vertex_name) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Vertex deleted successfully" << endl;
+        cout << "Vertex deleted successfully from db" << endl;
     }
     sqlite3_close(db);
 }
@@ -168,7 +170,7 @@ void delete_edge_from_db(string origin, string destination) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Edge deleted successfully" << endl;
+        cout << "Edge deleted successfully from db" << endl;
     }
     sqlite3_close(db);
 }

@@ -3,12 +3,30 @@
 
 using namespace std;
 
+void introduction();
+
 void main_menu();
 
 void vertices_menu();
 
 void edges_menu();
 
+
+void introduction() {
+    clean_console();
+    cout << "=================================================================================================== \n\n" << endl;
+    cout << "Bienvenido al sistema de administracion de red\n" << endl;
+    cout << "Mediante este programa ud puede gestionar los nodos de una red de manera limitada, pero eficiente. \n"
+            "Se encuentran disponibles las siguientes opciones:\n\n"
+            "- Trabajo con nodos de una red (CRUD)\n"
+            "- Trabajo con enlaces entre nodos (CRUD)\n"
+            "- Persistencia de datos en bases de datos SQL\n"
+            "- Implementacion del algoritmo de djikstra (camino mas cercano) para grandes volumenes de datos\n" << endl;
+    cout << "=================================================================================================== \n" << endl;
+    cout <<"Presione cualquier tecla para comenzar";
+    getchar();
+
+}
 
 void main_menu() {
 
@@ -23,6 +41,7 @@ void main_menu() {
         cout << "3 -> Hallar ruta mas cercana" << endl;
         cout << "4 -> Crear db" << endl;
         cout << "5 -> Salir" << endl;
+        cout <<"\n\nIntroduzca su seleccion: ";
 
 
         int option;
@@ -63,7 +82,9 @@ void vertices_menu() {
         cout << "2 -> Modificar vertice" << endl;
         cout << "3 -> Eliminar vertice" << endl;
         cout << "4 -> Listar vertices" << endl;
-        cout << "5 -> " << endl;
+        cout << "5 -> Obtener nodos adyacentes" << endl;
+        cout << "6 -> Volver" << endl;
+        cout <<"\n\nIntroduzca su seleccion: ";
 
 
         int option;
@@ -87,6 +108,10 @@ void vertices_menu() {
                 print_vertices();
                 break;
             case 5:
+                clean_console();
+                get_adjacent_vertices();
+                break;
+            case 6:
                 return;
             default:
                 cout << "Por favor inserte un numero entre 1 y 5." << endl;
@@ -107,7 +132,8 @@ void edges_menu() {
         cout << "2 -> Modificar arco" << endl;
         cout << "3 -> Eliminar arco" << endl;
         cout << "4 -> Listar arcos" << endl;
-        cout << "5 -> " << endl;
+        cout << "5 -> Regresar" << endl;
+        cout <<"\n\nIntroduzca su seleccion: ";
 
         int option;
         validateInput(option);

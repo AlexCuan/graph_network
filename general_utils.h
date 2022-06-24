@@ -2,30 +2,9 @@
 #include "Graph.h"
 #include <limits.h>
 #include <vector>
-//#include "db_utils.h"
 
 
 using namespace std;
-
-template<typename T>
-T &validateInput(T &val) {
-    while (true) {
-
-        if (cin >> val && val > 0) {
-            break;
-        } else {
-            cout << "Enter a valid integer value!: ";
-            cin.clear();
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
-        }
-    }
-    return val;
-}
-
-void pause_f() {
-    cout << "Presione enter para continuar ..." << endl;
-    getchar();
-}
 
 void add_vertex_m() {
     string name;
@@ -34,8 +13,13 @@ void add_vertex_m() {
     if (!get_vertex_by_name(name, *G).found) {
         add_node(name, *G);
         save_vertex_to_db(name);
+        pause_f();
+        return;
     } else {
-        cout << "Vertice ya existente" << endl;
+        cout << "No se pudo añadir el vertice"<<endl;
+        cin.ignore();
+        pause_f();
+        return;
     }
 }
 
@@ -51,8 +35,11 @@ void add_edge_m() {
         cin >> answ;
         if (answ == "yes") {
             add_vertex_m();
+            cout << "Vertice añadido" << endl;
+            pause_f();
         } else {
             cout << "Añadir vertice no se llevo a cabo. No se puede crear arco" << endl;
+            pause_f();
             return;
         }
 
@@ -66,6 +53,8 @@ void add_edge_m() {
         cin >> answ;
         if (answ == "yes") {
             add_vertex_m();
+            cout << "Vertice añadido" << endl;
+            pause_f();
         } else {
             cout << "Añadir vertice no se llevo a cabo. No se puede crear arco" << endl;
             return;
@@ -76,9 +65,13 @@ void add_edge_m() {
 
     if (get_edge(from, to, *G).found) {
         cout << "Arista ya existente" << endl;
+        pause_f();
+        return;
     } else {
         add_edge(temp.first, temp.second, *G);
         save_edge_to_db(from, to);
+        pause_f();
+        return;
     }
 }
 
@@ -86,9 +79,12 @@ void update_vertex_m() {
     string actual_name;
     string new_name;
     cout << "Ingrese el nombre actual del vertice: ";
+    cin.ignore();
     getline(cin, actual_name, '\n');
 
+
     cout << "Ingrese el nombre nuevo del vertice: ";
+    cin.ignore();
     getline(cin, new_name, '\n');
 
     vertex_struct a = get_vertex_by_name(actual_name, *G);
@@ -96,8 +92,13 @@ void update_vertex_m() {
     if (a.found) {
         modify_vertex_name(a.vertex, new_name);
         update_vertex_db(actual_name, new_name);
+        cout << "Vertice actualizado" << endl;
+        pause_f();
+        return;
     } else {
         cout << "No existe el nodo" << endl;
+        pause_f();
+        return;
     }
 }
 
@@ -108,7 +109,6 @@ void update_edge_m() {
     cout << "Introduzca el arco viejo: ";
     cin >> from_old >> to_old;
 
-//    Edge temp = make_pair(vertex_i[get_vertex_by_name(from_old, *G).vertex], vertex_i[get_vertex_by_name(to_old, *G).vertex]);
     edge_struct a = get_edge(from_old, to_old, *G);
 
     if (a.found) {
@@ -131,8 +131,11 @@ void update_edge_m() {
         modify_weight(a.edge, weight);
         update_edge(actual_edge, new_edge);
         update_edge_db(from_old, to_old, from_new, to_new, weight);
+        cout << "Arco actualizado" << endl;
+        pause_f();
     } else {
         cout << "No existe el arco" << endl;
+        pause_f();
     }
 }
 
@@ -145,8 +148,11 @@ void delete_vertex_m() {
         clear_vertex(a.vertex, *G);
         remove_vertex(a.vertex, *G);
         delete_vertex_from_db(name);
+        cout << "Vertice eliminado" << endl;
+        pause_f();
     } else {
         cout << "No existe el vertice" << endl;
+        pause_f();
     }
 }
 
@@ -158,15 +164,16 @@ void delete_edge_m() {
     cout << "Introduzca el vertice de destino: ";
     cin >> to;
 
-//    Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex], vertex_i[get_vertex_by_name(to, *G).vertex]);
     edge_struct a = get_edge(from, to, *G);
 
     if (a.found) {
         remove_edge(a.edge, *G);
         delete_edge_from_db(from, to);
-        clog << "Edge deleted successfully";
+        cout << "Edge deleted successfully";
+        pause_f();
     } else {
         cout << "Edge doesn't exists" << endl;
+        pause_f();
     }
 
 }
@@ -184,11 +191,14 @@ void get_shortest_path() {
         path_and_dist dist = shortest_path(a.vertex, b.vertex);
 
         for (std::size_t i = 0; i < dist.path.size(); i++) {
-            cout << vertex_i(dist.path[i]) << " --> ";
+            vertex_struct a  = get_vertex_by_index(vertex_i(dist.path[i]), *G);
+            cout << name_node(a.vertex) << " --> ";
         }
-        cout << endl;
+        cout<<"end \n";
+        pause_f();
     } else {
         cout << "No existe uno de los vertices" << endl;
+        pause_f();
     }
 }
 
@@ -201,8 +211,10 @@ void get_adjacent_vertices() {
         cout << "Vertices adyacentes: " << endl;
         retrieve_adjacent_vertices(a.vertex, *G);
         cout << endl;
+        pause_f();
     } else {
         cout << "No existe el vertice" << endl;
+        pause_f();
     }
 }
 
@@ -221,11 +233,10 @@ void print_edges() {
              edge_weight_map[*ei] << endl;
         i++;
     }
-pause_f();}
-
-void clean_console() {
-    system("clear");
+    pause_f();
 }
+
+
 
 
 

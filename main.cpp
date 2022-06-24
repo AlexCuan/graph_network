@@ -8,6 +8,9 @@ using std::string;
 
 
 int main() {
+    create_tables();
+    graph_builder();
+    introduction();
     main_menu();
     return 0;
 }
