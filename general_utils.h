@@ -84,18 +84,14 @@ void update_vertex_m() {
     cout << "> Ingrese el nombre actual del vertice: ";
     cin.ignore();
     getline(cin, actual_name, '\n');
-    cout <<actual_name<<endl;
-
 
     cout << "> Ingrese el nombre nuevo del vertice: ";
     getline(cin, new_name, '\n');
-    cout <<new_name<<endl;
 
     vertex_struct a = get_vertex_by_name(actual_name, *G);
 
     if (a.found) {
         modify_vertex_name(a.vertex, new_name);
-        cout <<name_node(a.vertex)<<endl;
         update_vertex_db(actual_name, new_name);
         cout << "** Vertice actualizado **" << endl;
         pause_f();
@@ -141,7 +137,7 @@ void update_edge_m() {
                                   vertex_i[get_vertex_by_name(to_new, *G).vertex]);
 
         modify_weight(a.edge, weight);
-        update_edge(actual_edge, new_edge);
+        update_edge(actual_edge, new_edge, *G);
         update_edge_db(from_old, to_old, from_new, to_new, weight);
         cout << "** Arco actualizado **" << endl;
         pause_f();

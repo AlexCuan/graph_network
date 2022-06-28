@@ -14,15 +14,15 @@ void edges_menu();
 
 void introduction() {
     clean_console();
-    cout << "=================================================================================================== \n\n" << endl;
-    cout << "Bienvenido al sistema de administracion de red\n" << endl;
+    cout << "=================================================================================================== \n\n\n";
+    cout << "Bienvenido al sistema de administracion de red\n\n";
     cout << "Mediante este programa ud puede gestionar los nodos de una red de manera limitada, pero eficiente. \n"
             "Se encuentran disponibles las siguientes opciones:\n\n"
             "- Trabajo con nodos de una red (CRUD)\n"
             "- Trabajo con enlaces entre nodos (CRUD)\n"
             "- Persistencia de datos en bases de datos SQL\n"
-            "- Implementacion del algoritmo de djikstra (camino mas cercano) para grandes volumenes de datos\n" << endl;
-    cout << "=================================================================================================== \n" << endl;
+            "- Implementacion del algoritmo de djikstra (camino mas cercano) para grandes volumenes de datos\n\n";
+    cout << "=================================================================================================== \n\n";
     cout <<"Presione cualquier tecla para comenzar";
     getchar();
 
@@ -32,9 +32,9 @@ void main_menu() {
 
     while (true) {
         clean_console();
-        cout << "============================================================================== \n" << endl;
-        cout << "                            Titulo de prueba                                 \n" << endl;
-        cout << "==============================================================================\n" << endl;
+        cout << "============================================================================== \n\n";
+        cout << "                           Sistema de administracion de red                                \n\n";
+        cout << "==============================================================================\n\n";
 
         cout << "1 -> Gestionar nodos" << endl;
         cout << "2 -> Gestionar arcos" << endl;
@@ -74,9 +74,9 @@ void vertices_menu() {
     while (true) {
         clean_console();
 
-        cout << "============================================================================== \n" << endl;
-        cout << "                            Titulo de prueba                                 \n" << endl;
-        cout << "==============================================================================\n" << endl;
+        cout << "============================================================================== \n\n";
+        cout << "                            Sistema de administracion de red                                 \n\n";
+        cout << "==============================================================================\n\n";
 
         cout << "1 -> Añadir vertice" << endl;
         cout << "2 -> Modificar vertice" << endl;
@@ -124,9 +124,9 @@ void edges_menu() {
     while (true) {
         clean_console();
 
-        cout << "============================================================================== \n" << endl;
-        cout << "                            Titulo de prueba                                 \n" << endl;
-        cout << "==============================================================================\n" << endl;
+        cout << "============================================================================== \n\n";
+        cout << "                            Sistema de administracion de red                                 \n\n";
+        cout << "==============================================================================\n\n";
 
         cout << "1 -> Añadir arco" << endl;
         cout << "2 -> Modificar arco" << endl;

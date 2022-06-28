@@ -13,7 +13,6 @@ using std::cout;
 using std::string;
 using std::vector;
 
-// Define a new vertex property
 struct node_name_t
 {
     typedef vertex_property_tag kind;
@@ -23,9 +22,7 @@ typedef property<node_name_t, string> NodeNameProperty;
 typedef property<edge_weight_t, int> EdgeProperty;
 typedef adjacency_list<vecS, vecS, undirectedS, NodeNameProperty, EdgeProperty> Graph;
 typedef vector<int> vector_int;
-typedef vector<float> vector_float;
 typedef std::pair<int, int> Edge;
-typedef vector<string> vector_string;
 typedef graph_traits<Graph>::vertex_descriptor Vertex_desc;
 typedef graph_traits<Graph>::edge_descriptor Edge_desc;
 
@@ -34,8 +31,6 @@ Graph *G = new Graph;
 typename property_map<Graph, edge_weight_t>::type edge_weight_map = get(edge_weight, *G);
 typename property_map<Graph, node_name_t>::type name_node = get(node_name_t(), *G);
 typename property_map<Graph, vertex_index_t>::type vertex_i = get(vertex_index, *G);
-// typedef property_map<Graph, vertex_index_t>::type vertex_i = get(vertex_index, *G);
-// IndexMap vertex_i = get(vertex_index, *G);
 
 typedef graph_traits<Graph>::vertex_iterator vertex_iter;
 graph_traits<Graph>::edge_iterator ei, ei_end;
@@ -76,9 +71,9 @@ vertex_struct get_vertex_by_index(int index_vertex_p, Graph &referenced_graph)
     {
         if (vertex_i[*vp.first] == index_vertex_p)
         {
-            // return *vp.first;
             vertex_found.found = true;
             vertex_found.vertex = *vp.first;
+            return vertex_found;
         }
     }
     return vertex_found;
@@ -86,15 +81,14 @@ vertex_struct get_vertex_by_index(int index_vertex_p, Graph &referenced_graph)
 
 vertex_struct get_vertex_by_name(string vertex_name, Graph &referenced_graph)
 {
-    vertex_struct vertex;
+    vertex_struct vertex_found;
     for (vp = vertices(referenced_graph); vp.first != vp.second; ++vp.first)
     {
         if (name_node[*vp.first] == vertex_name)
         {
-            // return *vp.first;
             vertex.found = true;
             vertex.vertex = *vp.first;
-            return vertex;
+            return vertex_found;
         }
     }
     return vertex;
@@ -102,7 +96,7 @@ vertex_struct get_vertex_by_name(string vertex_name, Graph &referenced_graph)
 
 
 edge_struct get_edge(string from, string to, Graph &referenced_graph) {
-    edge_struct edge;
+    edge_struct edge_found;
     Edge temp = make_pair(vertex_i[get_vertex_by_name(from, *G).vertex],
                           vertex_i[get_vertex_by_name(to, *G).vertex]);
 
@@ -113,10 +107,10 @@ edge_struct get_edge(string from, string to, Graph &referenced_graph) {
 
             edge.found = true;
             edge.edge = *ei;
-            return edge;
+            return edge_found;
         }
     }
-    return edge;
+    return edge_found;
 }
 
 void add_node(string name, Graph &referenced_graph)
@@ -125,10 +119,10 @@ void add_node(string name, Graph &referenced_graph)
     modify_vertex_name(temp, name);
 }
 
-void update_edge(Edge actual_edge, Edge new_edge)
+void update_edge(Edge actual_edge, Edge new_edge, &referencedGraph)
 {
-    remove_edge(vertex_i[actual_edge.first], vertex_i[actual_edge.second], *G);
-    add_edge(new_edge.first, new_edge.second, *G);
+    remove_edge(vertex_i[actual_edge.first], vertex_i[actual_edge.second], referencedGraph);
+    add_edge(new_edge.first, new_edge.second, referencedGraph;
 }
 
 void modify_weight(Edge_desc arco, int weight_value)
@@ -136,18 +130,12 @@ void modify_weight(Edge_desc arco, int weight_value)
     edge_weight_map[arco] = weight_value;
 }
 
-//void clear_node(Vertex_desc vertex, Graph &referenced_graph)
-//{
-    //clear_vertex(vertex, referenced_graph);
-//}
-
 void retrieve_adjacent_vertices(Vertex_desc v, Graph &referenced_graph)
 {
     cout << name_node[v];
-    // TO-DO: Fix at the end of the function retrieves a % when the vertex is not found
     for (tie(ai, ai_end) = adjacent_vertices(v, referenced_graph); ai != ai_end; ++ai)
     {
-        cout << "->" << vertex_i[*ai];
+        cout << "->" << name_node[*ai];
     }
 }
 
@@ -170,7 +158,7 @@ vector<Vertex_desc> get_Path(
 
 path_and_dist shortest_path(Vertex_desc src,
                             Vertex_desc dest, Graph &referenced_graph)
-{ // determina el camino mas corto desde un vertice hacia todos los demas del grafo
+{
     vector<Vertex_desc> p(num_vertices(referenced_graph));
     vector<int> d(num_vertices(referenced_graph));
     Vertex_desc s = vertex(src, *G);
