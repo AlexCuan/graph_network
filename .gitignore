@@ -15,6 +15,7 @@
 *.so
 *.dylib
 *.dll
+*.swp
 
 # Fortran module files
 *.mod
@@ -30,3 +31,6 @@
 *.exe
 *.out
 *.app
+.idea
+cmake-build-debug
+CMakeLists.txt
