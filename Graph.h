@@ -86,12 +86,12 @@ vertex_struct get_vertex_by_name(string vertex_name, Graph &referenced_graph)
     {
         if (name_node[*vp.first] == vertex_name)
         {
-            vertex.found = true;
-            vertex.vertex = *vp.first;
+            vertex_found.found = true;
+            vertex_found.vertex = *vp.first;
             return vertex_found;
         }
     }
-    return vertex;
+    return vertex_found;
 }
 
 
@@ -105,8 +105,8 @@ edge_struct get_edge(string from, string to, Graph &referenced_graph) {
         if ((vertex_i[source(*ei, referenced_graph)] == temp.first && vertex_i[target(*ei, referenced_graph)] == temp.second) ||
             (vertex_i[target(*ei, referenced_graph)] == temp.first && vertex_i[source(*ei, referenced_graph)] == temp.second)) {
 
-            edge.found = true;
-            edge.edge = *ei;
+            edge_found.found = true;
+            edge_found.edge = *ei;
             return edge_found;
         }
     }
@@ -119,10 +119,10 @@ void add_node(string name, Graph &referenced_graph)
     modify_vertex_name(temp, name);
 }
 
-void update_edge(Edge actual_edge, Edge new_edge, &referencedGraph)
+void update_edge(Edge actual_edge, Edge new_edge, Graph &referencedGraph)
 {
     remove_edge(vertex_i[actual_edge.first], vertex_i[actual_edge.second], referencedGraph);
-    add_edge(new_edge.first, new_edge.second, referencedGraph;
+    add_edge(new_edge.first, new_edge.second, referencedGraph);
 }
 
 void modify_weight(Edge_desc arco, int weight_value)

@@ -5,8 +5,8 @@
 using namespace std;
 
 void pause_f() {
-    cout << "Presione enter para continuar ...";
-    cin.clear();
+    cout << "\nPresione enter para continuar ...";
+    cin.ignore();
     getchar();
 }
 void clean_console() {
@@ -19,7 +19,7 @@ T &validateInput(T &val) {
         if (cin >> val && val > 0) {
             break;
         } else {
-            cout << "Enter a valid integer value!: ";
+            cout << "\nEnter a valid integer value!: ";
             cin.clear();
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
