@@ -51,7 +51,7 @@ void save_vertex_to_db(string vertex_name) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Vertex added successfully to db" << endl;
+        cout << "\n** Vertex added successfully to db **" << endl;
     }
     sqlite3_close(db);
 }
@@ -68,7 +68,7 @@ void save_edge_to_db(string origin, string destination, int weight = 0) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Edge added successfully to db" << endl;
+        cout << "\n** Edge added successfully to db **" << endl;
     }
     sqlite3_close(db);
 }
@@ -118,7 +118,7 @@ void update_vertex_db(string vertex_name, string new_name) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Vertex updated successfully in db" << endl;
+        cout << "\n** Vertex updated successfully in db **" << endl;
     }
     sqlite3_close(db);
 }
@@ -136,7 +136,7 @@ void update_edge_db(string origin, string destination, string new_origin, string
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Edge updated in db successfully" << endl;
+        cout << "\n** Edge updated in db successfully **" << endl;
     }
     sqlite3_close(db);
 }
@@ -152,7 +152,7 @@ void delete_vertex_from_db(string vertex_name) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Vertex deleted successfully from db" << endl;
+        cout << "\n** Vertex deleted successfully from db **" << endl;
     }
     sqlite3_close(db);
 }
@@ -168,7 +168,7 @@ void delete_edge_from_db(string origin, string destination) {
         cerr << "Error" << messageError << endl;
         sqlite3_free(messageError);
     } else {
-        cout << "Edge deleted successfully from db" << endl;
+        cout << "\n** Edge deleted successfully from db **" << endl;
     }
     sqlite3_close(db);
 }

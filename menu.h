@@ -39,8 +39,7 @@ void main_menu() {
         cout << "1 -> Gestionar nodos" << endl;
         cout << "2 -> Gestionar arcos" << endl;
         cout << "3 -> Hallar ruta mas cercana" << endl;
-        cout << "4 -> Crear db" << endl;
-        cout << "5 -> Salir" << endl;
+        cout << "4 -> Salir" << endl;
         cout <<"\n\nIntroduzca su seleccion: ";
 
 
@@ -58,9 +57,6 @@ void main_menu() {
                 get_shortest_path();
                 break;
             case 4:
-                create_tables();
-                break;
-            case 5:
                 return;
 
             default:
